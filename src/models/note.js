@@ -39,6 +39,23 @@ class Note {
   }
 
   /**
+   * 获取相应页数的游记
+   * @param {int} count 每页几条数据 
+   * @param {int} page 第几页
+   */
+  async getLoginNotes ({ count = this.count, page = this.page }) {
+    let res
+    res = await get('v1/note/login/notes', {
+      count,
+      page,
+    })
+    // console.log(res)
+    res.items = formatData(res.items)
+    // console.log(res)
+    return res
+  }
+
+  /**
    * 发布游记
    * @param {String} title 标题
    * @param {String} img 封面url
@@ -54,10 +71,18 @@ class Note {
    * @param {int} num 游记数量
    */
   async getHotNotes ({ num }) {
-    let res = await post('v1/note/getHotNotes', { num }, { handleError: true })
+    let res = await post('v1/note/hotNotes', { num }, { handleError: true })
     return formatData(res)
   }
 
+  /**
+   * 获取几个最火游记
+   * @param {int} num 游记数量
+   */
+  async getLoginHotNotes ({ num }) {
+    let res = await post('v1/note/login/hotNotes', { num }, { handleError: true })
+    return formatData(res)
+  }
   // 在这里通过 async await 语法糖让代码同步执行
   // 1. await 一定要搭配 async 来使用
   // 2. await 后面跟的是一个 Promise 对象
@@ -79,7 +104,7 @@ class Note {
    */
   async like ({ art_id, type }) {
     let res = await post('v1/like/', { art_id, type }, { handleError: true })
-    console.log(res)
+    // console.log(res)
     return res
   }
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-clickoutside="hideReplyBtn" @click="inputFocus" class="my-reply">
+    <div v-clickoutside="hideReplyBtn" @click="inputFocus" class="my-reply"   id="comments">
       <el-avatar class="header-img" :size="40" :src="myHeader"></el-avatar>
       <div class="reply-info">
         <div
@@ -242,20 +242,16 @@ export default {
         a.name = this.myName
         a.comment = this.replyComment
         a.headImg = this.myHeader
-        try { 
-          await comment.sendComment(a)
-          this.$message({
-            showClose: true,
-            type: 'success',
-            message: '发表成功'
-          })
+        const res = await comment.sendComment(a)
+        if (res.error_code === 0) {
+          this.$message.success(`${res.msg}`)
           setTimeout(() => {
             this.reload()
           }, 1000)
-        } catch (error) {
-          console.log(error)
-          this.$message.error(error.data.msg);
-        }        
+        }else {
+          console.log('error!!')
+          this.$message.error(`${res.msg}`)
+        }  
       }
     },
     // eslint-disable-next-line no-unused-vars

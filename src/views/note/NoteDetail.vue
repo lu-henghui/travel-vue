@@ -60,38 +60,14 @@ export default {
       console.log(this.list)
       var s = document.getElementById('myContent')
       s.innerHTML = this.list.text
-      // await this.listComments()
+      if(this.$route.query.comments){
+        this.findComments()
+      }
     },
-    // async listComments () {
-    //   try {
-    //     this.comments = await comment.getCommentInfo(this.$route.params.id, this.type)
-    //     console.log(this.comments)
-    //     if (this.comments.length > 0) {
-    //       await this.listReply()
-    //     }
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // },
-    // async listReply () {
-    //   if (this.comments.length < 0) {
-    //     return
-    //   }
-    //   for (let i = 0; i < this.comments.length; i++) {
-    //     let id = this.comments[i].id
-    //     console.log(id)
-    //     // this.replys[id] = await comment.getCommentReply(id)
-    //   }
-    //   console.log(this.replys)
-    // },
-    handleClickAvatar (item) {
-      console.log('点击了头像' + item)
-    },
-    handleClickAuthor (item) {
-      console.log('点击了用户' + item)
-    },
-    handleAddReply (item) {
-      console.log(item)
+    findComments(){
+      setTimeout(() => {
+        document.querySelector('#comments').scrollIntoView({ behavior: "smooth" });
+      }, 1000)
     }
   },
   components: {

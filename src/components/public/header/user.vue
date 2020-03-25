@@ -15,7 +15,7 @@
             <div class="avatar" title="点击修改头像">
               <img :src="user.avatar || defaultAvatar" alt="头像" />
               <label class="mask">
-                <i class="iconfont icon-icon-test" style="font-size: 20px;"></i>
+                <i class="iconfont iconeditor" style="font-size: 20px;"></i>
                 <input ref="avatarInput" type="file" accept="image/*" @change="fileChange" />
               </label>
             </div>
@@ -29,15 +29,15 @@
           </div>
           <ul class="dropdown-box">
             <li class="basic" @click="toBasic">
-              <i class="iconfont icon-zidingyi"></i>
+              <i class="iconfont iconset"></i>
               <span>修改基本资料</span>
             </li>
             <li class="password" @click="toPassword">
-              <i class="iconfont icon-weibaoxitongshangchuanlogo-"></i>
+              <i class="iconfont iconunlock"></i>
               <span>修改登录密码</span>
             </li>
             <li class="account" @click="outLogin">
-              <i class="iconfont icon-tuichu"></i>
+              <i class="iconfont iconswitch"></i>
               <span>退出账户</span>
             </li>
           </ul>

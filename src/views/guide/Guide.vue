@@ -5,53 +5,10 @@
         <div class="m-note clearfix">
           <div class="m-note-main clearfix">
             <h2>
-              <a href>最佳攻略</a>
+              <router-link to="/guide">最佳攻略</router-link>
             </h2>
           </div>
-          <ul class="m-note-list clearfix">
-            <li v-for="(item,idx) in list" :key="idx" class="clearfix">
-              <div class="list-avatar pull-left">
-                <router-link :to="'/guide/'+item.id">
-                  <img :src="item.img" :alt="item.title" />
-                </router-link>
-              </div>
-              <div class="list-content pull-left">
-                <div class="praise-box">
-                  <like :art_id="item.id" :type="type" :like_count="item.praise" :liked="item.liked" />
-                </div>
-                <div class="retweet clearfix">
-                  <div class="pull-left">
-                    <router-link :to="'/user/'+item.eId">
-                      <img :src="item.avatar" :alt="item.nickname" class="header" />
-                    </router-link>
-                  </div>
-                  <div class="pull-left" style="width:85%;">
-                    <p class="retweet-title">
-                      <router-link style="width:85%;display: inline-block;" :to="'/guide/'+item.id">
-                        {{ item.title }}
-                      </router-link>
-                    </p>
-                    <p class="retweet-user">
-                      作者：
-                      <router-link :to="'/user/'+item.eId">{{ item.nickname }}</router-link>
-                    </p>
-                  </div>
-                </div>
-                <p class="re-summary">{{ item.summary }}</p>
-                <div class="meta clearfix">
-                  <div class="infos pull-left">
-                    <span class="time">{{ item.create_time }}</span>
-                  </div>
-                  <el-badge :value="200" :max="99" class="item">
-                    <el-button size="small">评论</el-button>
-                  </el-badge>
-                  <el-badge :value="100" :max="10" class="item">
-                    <el-button size="small">回复</el-button>
-                  </el-badge>
-                </div>
-              </div>
-            </li>
-          </ul>
+          <guide :list="list" :type="type" />
           <!-- 分页 -->
           <div class="pagination">
             <el-pagination
@@ -75,7 +32,7 @@
 
 <script>
 import guide from "@/models/guide";
-import Like from "@/components/base/like/like";
+import Guide from "@/components/public/article-list";
 
 export default {
   data () {
@@ -94,7 +51,11 @@ export default {
       let res
       const currentPage = this.currentPage - 1
       try {
-        res = await guide.getGuides({ count: this.pageCount, page: currentPage });
+        if(this.id){
+          res = await guide.getLoginGuides({ count: this.pageCount, page: currentPage });
+        }else{  
+          res = await guide.getGuides({ count: this.pageCount, page: currentPage });
+        }
         this.list = [...res.items]
         console.log(this.list)
         this.total_nums = res.total
@@ -123,12 +84,19 @@ export default {
         })
       }
     },
+    init() {
+      const { user } = this.$store.state;
+      if (user) {
+        this.id = user.id;
+      }
+    },
   },
   async created() {
+    this.init();
     await this.getAllGuides()
   },
   components: {
-    Like
+    Guide
   }
 }
 </script>

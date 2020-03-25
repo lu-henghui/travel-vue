@@ -5,26 +5,118 @@ import defaultAvatar from "@/assets/img/user/user.png";
 
 // 我们通过 class 这样的语法糖使模型这个概念更加具象化，其优点：耦合性低、可维护性。
 class Guide {
-  // constructor() {}
+  constructor(page = 0, count = 10) {
+    this.page = page
+    this.count = count
+  }
 
-  // 类中的方法可以代表一个用户行为
-  async addGuide (info) {
-    const res = await post('v1/guide', info, { handleError: true })
+  async incresePage () {
+    this.page += 1
+  }
+
+  async decresePage () {
+    this.page -= 1
+    if (this.page < 0) {
+      this.page = 0
+    }
+  }
+
+  /**
+   * 获取相应页数的游记
+   * @param {int} count 每页几条数据 
+   * @param {int} page 第几页
+   */
+  async getGuides ({ count = this.count, page = this.page }) {
+    let res
+    res = await get('v1/guide/guides', {
+      count,
+      page,
+    })
+    // console.log(res)
+    res.items = formatData(res.items)
+    // console.log(res)
     return res
   }
 
+  /**
+   * 获取相应页数的游记
+   * @param {int} count 每页几条数据 
+   * @param {int} page 第几页
+   */
+  async getLoginGuides ({ count = this.count, page = this.page }) {
+    let res
+    res = await get('v1/guide/login/guides', {
+      count,
+      page,
+    })
+    // console.log(res)
+    res.items = formatData(res.items)
+    // console.log(res)
+    return res
+  }
+
+  /**
+   * 发布游记
+   * @param {String} title 标题
+   * @param {String} img 封面url
+   * @param {String} text 发布内容
+   */
+  async addGuide ({ title, img, text }) {
+    const res = await post('v1/guide', { title, img, text }, { handleError: true })
+    return res
+  }
+
+  /**
+   * 获取几个最火游记
+   * @param {int} num 游记数量
+   */
+  async getHotGuides ({ num }) {
+    let res = await post('v1/guide/hotGuides', { num }, { handleError: true })
+    return formatData(res)
+  }
+
+  /**
+   * 获取几个最火游记
+   * @param {int} num 游记数量
+   */
+  async getLoginHotGuides ({ num }) {
+    let res = await post('v1/guide/login/hotGuides', { num }, { handleError: true })
+    return formatData(res)
+  }
   // 在这里通过 async await 语法糖让代码同步执行
   // 1. await 一定要搭配 async 来使用
   // 2. await 后面跟的是一个 Promise 对象
 
   /**
-   * 根据ID获取攻略
-   * @param {int} id 攻略ID值
+   * 根据ID获取游记
+   * @param {int} id 游记ID值
    */
   async getGuide (id) {
     const res = await get(`v1/guide/${id}`)
     // console.log(res)
     return formatDetailData(res)
+  }
+
+  /**
+   * 点赞
+   * @param {int} art_id 游记ID
+   * @param {int} type 类型ID
+   */
+  async like ({ art_id, type }) {
+    let res = await post('v1/like/', { art_id, type }, { handleError: true })
+    // console.log(res)
+    return res
+  }
+
+  /**
+   * 取消点赞
+   * @param {int} art_id 游记ID
+   * @param {int} type 类型ID
+   */
+  async dislike ({ art_id, type }) {
+    let res = await post('v1/like/cancel', { art_id, type }, { handleError: true })
+    console.log(res)
+    return res
   }
 
   async editGuide (id, info) {
@@ -36,37 +128,9 @@ class Guide {
     const res = await _delete(`v1/guide/${id}`)
     return res
   }
-
-  /**
-   * 获取所有攻略
-   */
-  // async getGuides () {
-  //   let res = await get('v1/guide/')
-  //   for (var i = 0; i < res.length; i++) {
-  //     if (res[i].avatar) {
-  //       res[i].avatar = config.baseURL + 'assets/' + res[i].avatar
-  //     }
-  //   }
-  //   return res
-  // }
-
-  /**
-   * 获取相应页数的攻略
-   * @param {int} count 每页几条数据 
-   * @param {int} page 第几页
-   */
-  async getGuides ({ count = this.count, page = this.page }) {
-    let res
-    res = await get('v1/guide/guides', {
-      count,
-      page,
-    })
-    console.log(res)
-    res.items = formatData(res.items)
-    // console.log(res)
-    return res
-  }
 }
+
+
 
 /**
  * 格式化游记 前台
@@ -74,7 +138,7 @@ class Guide {
  */
 function formatData (res) {
   for (var i = 0; i < res.length; i++) {
-    if (res[i].avatar && res[i].avatar.indexOf('http') < 0) {
+    if ( res[i].avatar && res[i].avatar.indexOf('http') < 0) {
       res[i].avatar = config.baseURL + 'assets/' + res[i].avatar
     }else{
       res[i].avatar = defaultAvatar
@@ -93,7 +157,7 @@ function formatData (res) {
  * @param {array} res 游记内容
  */
 function formatDetailData (res) {
-  if (res.avatar && res.avatar.indexOf('http') < 0) {
+  if ( res.avatar && res.avatar.indexOf('http') < 0) {
     res.avatar = config.baseURL + 'assets/' + res.avatar
   }else{
     res.avatar = defaultAvatar

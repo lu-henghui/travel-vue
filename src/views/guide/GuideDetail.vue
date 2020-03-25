@@ -28,6 +28,7 @@
                 </li>
               </ul>
             </div>
+            <comment :id="id" :type="type" />
           </div>
         </div>
       </el-col>
@@ -38,24 +39,39 @@
   </div>
 </template>
 <script>
+import Comment from '@/components/base/comment/comment'
 import guide from '@/models/guide'
 
 export default {
   data() {
     return {
+      id: '',
+      type: 200,
       list: [],
     }
   },
   async created(){
-    this.list = await guide.getGuide(this.$route.params.id)
-    this.initData()
-    console.log(this.list)
+    this.id = this.$route.params.id
+    await this.initData()
   },
   methods: {
-    initData() {
+    async initData () {
+      this.list = await guide.getGuide(this.$route.params.id)
+      console.log(this.list)
       var s = document.getElementById('myContent')
       s.innerHTML = this.list.text
+      if(this.$route.query.comments){
+        this.findComments()
+      }
+    },
+    findComments(){
+      setTimeout(() => {
+        document.querySelector('#comments').scrollIntoView({ behavior: "smooth" });
+      }, 1000)
     }
+  },
+  components: {
+    Comment
   }
 }
 </script>
