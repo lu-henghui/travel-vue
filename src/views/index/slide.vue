@@ -49,7 +49,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .m-slide {
   height: 475px;
   margin: 10px;

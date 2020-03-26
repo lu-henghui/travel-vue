@@ -1,9 +1,15 @@
-import { post, get, put, _delete } from '@/lin/plugins/axios'
+import { post, get, put } from '@/lin/plugins/axios'
 import { saveTokens } from '@/lin/utils/token'
+import defaultAvatar from "@/assets/img/user/user.png";
+import config from '@/config'
 
 // 我们通过 class 这样的语法糖使模型这个概念更加具象化，其优点：耦合性低、可维护性。
 class User {
   // constructor() {}
+  
+  // 在这里通过 async await 语法糖让代码同步执行
+  // 1. await 一定要搭配 async 来使用
+  // 2. await 后面跟的是一个 Promise 对象
 
   /**
    * 邮箱验证
@@ -80,15 +86,23 @@ class User {
     })
   }
 
-  // 类中的方法可以代表一个用户行为
-  async addUser (info) {
-    const res = await post('v1/user', info, { handleError: true })
+  /**
+   * 关注用户
+   * @param {int} id 被关注用户ID
+   */
+  async follow ({ id }) {
+    const res = await post('v1/user/follow', { id }, { handleError: true })
     return res
   }
 
-  // 在这里通过 async await 语法糖让代码同步执行
-  // 1. await 一定要搭配 async 来使用
-  // 2. await 后面跟的是一个 Promise 对象
+  /**
+   * 关注用户
+   * @param {int} id 被关注用户ID
+   */
+  async unfollow ({ id }) {
+    const res = await post('v1/user/unfollow', { id }, { handleError: true })
+    return res
+  }
 
   /**
    * 根据ID获取用户信息
@@ -96,23 +110,22 @@ class User {
    */
   async getUser (id) {
     const res = await get(`v1/user/${id}`, { handleError: true })
-    return res
+    return formatAvatar(res)
   }
 
-  async editUser (id, info) {
-    const res = await put(`v1/user/${id}`, info)
-    return res
-  }
+}
 
-  async delectUser (id) {
-    const res = await _delete(`v1/user/${id}`)
-    return res
+/**
+ * 格式化头像
+ * @param {array} res 游记内容
+ */
+function formatAvatar (res) {
+  if ( res.avatar && res.avatar.indexOf('http') < 0) {
+    res.avatar = config.baseURL + 'assets/' + res.avatar
+  }else{
+    res.avatar = defaultAvatar
   }
-
-  async getAllUser () {
-    const res = await get('v1/user', { handleError: true })
-    return res
-  }
+  return res
 }
 
 export default new User()

@@ -1,4 +1,4 @@
-import { post, get, put, _delete } from '@/lin/plugins/axios'
+import { post, get } from '@/lin/plugins/axios'
 import config from '@/config'
 import { formatTime, formatText } from '@/utils'
 import defaultAvatar from "@/assets/img/user/user.png";
@@ -119,14 +119,12 @@ class Note {
     return res
   }
 
-  async editNote (id, info) {
-    const res = await put(`v1/note/${id}`, info)
-    return res
-  }
-
-  async delectNote (id) {
-    const res = await _delete(`v1/note/${id}`)
-    return res
+  /**
+   * 获取我的游记
+   */
+  async getMyNotes () {
+    let res = await get('v1/note/myNotes')
+    return formatData(res)
   }
 }
 

@@ -1,13 +1,13 @@
 <template>
   <div class="page-index">
     <div :gutter="20">
-      <el-col :span="18" :offset="3">
+      <el-col :span="19" :offset="3">
         <div class="personal-home">
           <div class="info">
             <div class="clearfix">
               <div class="status-avatar pull-left">
                 <span class="avatar-pic">
-                  <el-avatar :size="75" :src="user.avatar ? user.avatar : defaultAvatar"></el-avatar>
+                  <el-avatar :size="75" :src="user.avatar"></el-avatar>
                 </span>
               </div>
               <div class="status-content pull-left">
@@ -19,65 +19,173 @@
                     <span class="mr20">{{user.sex}}</span>
                     <span>{{user.city}}</span>
                   </div>
-                  <el-button v-if="!isMe">关注</el-button>
-                  <router-link to="/setting?type=basic" class="changeInfo pull-right">修改资料</router-link>
+                  <el-button v-if="!isMe && !isFollow" @click="follow(id)" class="pull-right">关注</el-button>
+                  <el-button v-else-if="!isMe" @click="unfollow(id)" class="pull-right">取消关注</el-button>
+                  <el-button v-else @click="toBasic" class="pull-right">修改资料</el-button>
                 </div>
               </div>
-              <div class="ops mt10">
-                <span>讨论（1）</span>
-                <span>攻略（1）</span>
-                <span>游记（1）</span>
-                <span>粉丝（1）</span>
-                <span>关注（1）</span>
+              <div class="ops mt10 pull-left">
+                <el-badge :value="user.notes" class="item">
+                  <el-button @click="getMyNotes" size="small">游记</el-button>
+                </el-badge>
+                <el-badge :value="user.guides" class="item">
+                  <el-button @click="getMyGuides" size="small">攻略</el-button>
+                </el-badge>
+                <el-badge :value="user.fans" class="item" type="primary">
+                  <el-button size="small">粉丝</el-button>
+                </el-badge>
+                <el-badge :value="user.follows" class="item" type="warning">
+                  <el-button size="small">关注</el-button>
+                </el-badge>
               </div>
             </div>
-            <p class="simple-introduce" v-if="isIntroduce">
+            <p class="simple-introduce" v-if="user.introduce">
               简介：
               <em class="declaration">{{user.introduce}}</em>
             </p>
           </div>
-          <div class="content mt40"></div>
+          <div v-show="showlList===0" class="content">
+            <div class="m-note-main clearfix">
+              <h2>
+                <router-link to="/note">我的游记</router-link>
+              </h2>
+            </div>
+            <art :list="list" :type="type" />
+          </div>
+          <div v-show="showlList===1" class="content">
+            <div class="m-note-main clearfix">
+              <h2>
+                <router-link to="/note">我的攻略</router-link>
+              </h2>
+            </div>
+            <art :list="list" :type="type" />
+          </div>
+          <div v-show="showlList===2" class="content">
+            <div class="m-note-main clearfix">
+              <h2>
+                <router-link to="/note">我的游记</router-link>
+              </h2>
+            </div>
+            <art :list="list" :type="type" />
+          </div>
+          <div v-show="showlList===3" class="content">
+            <div class="m-note-main clearfix">
+              <h2>
+                <router-link to="/note">我的游记</router-link>
+              </h2>
+            </div>
+            <art :list="list" :type="type" />
+          </div>
         </div>
       </el-col>
     </div>
   </div>
 </template>
 <script>
-import defaultAvatar from "@/assets/img/user/user.png";
-import user from "@/models/user";
+import User from "@/models/user";
+import note from "@/models/note";
+import guide from "@/models/guide";
+import Art from "@/components/public/article-list";
 
 export default {
-  data() {
+  components: {
+    Art
+  },
+  inject: ['reload'],
+  data () {
     return {
-      isMe: true,
-      isIntroduce: true,
-      defaultAvatar,
+      id: '',
+      isMe: false,
+      isFollow: false,
       user: {
         nickname: "",
         avatar: "",
         sex: "",
         city: "",
-        introduce: ""
-      }
+        introduce: "",
+        followed: '',
+        notes: '',
+        guides: '',
+        fans: '',
+        follows: ''
+      },
+      list: [],
+      type: '', // 游记类型为100 攻略类型为200
+      showlList: '',
     };
   },
   async created () {
     this.init()
   },
   methods: {
-    async init() {
+    async init () {
+      this.id = this.$route.params.id
       try {
-        this.user = await user.getUser(this.$route.params.id)
+        this.user = await User.getUser(this.id)
+        this.isFollow = this.user.followed ? true : false
         console.log(this.user)
       } catch (error) {
         console.log(error);
         this.$message.error(error.data.msg);
       }
-    }
+      const { user } = this.$store.state;
+      if (user && user.id == this.id) {
+        this.isMe = true
+      }
+    },
+    async follow (id) {
+      try {
+        const res = await User.follow({ id })
+        this.$message.success(`${res.msg}`)
+        this.isFollow = true
+      } catch (error) {
+        console.log(error);
+        this.$message.error(error.data.msg);
+      }
+    },
+    async unfollow (id) {
+      try {
+        const res = await User.unfollow({ id })
+        this.$message.success(`${res.msg}`)
+        this.isFollow = false
+      } catch (error) {
+        console.log(error);
+        this.$message.error(error.data.msg);
+      }
+    },
+    toBasic () {
+      this.$router.push({ path: '/setting?type=basic' })
+    },
+    // 获取我的游记
+    async getMyNotes() {
+      this.showlList = 0
+      this.type = 100
+      try {
+        this.list = await note.getMyNotes();
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 获取我的攻略
+    async getMyGuides() {
+      this.showlList = 1
+      this.type = 200
+      try {
+        this.list = await guide.getMyGuides();
+      } catch (e) {
+        console.log(e)
+      }
+    },
   },
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    '$route' (to, from) {
+      this.reload()
+    }
+  }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .page-index {
   position: relative;
   margin-top: 10px;
@@ -132,7 +240,9 @@ export default {
         }
       }
       .ops {
-        width: 480px;
+        .item {
+          margin-right: 40px;
+        }
       }
     }
     .simple-introduce {
@@ -144,6 +254,18 @@ export default {
         font-style: normal;
       }
     }
+    .content{
+      width: 840px;
+      margin-top: 40px;
+    }
+  }
+}
+.m-note-main h2 {
+  float: left;
+  font-size: 18px;
+  font-weight: 700;
+  a {
+    color: #333;
   }
 }
 </style>

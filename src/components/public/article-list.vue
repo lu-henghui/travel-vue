@@ -12,7 +12,7 @@
         </div>
         <div class="retweet clearfix">
           <div class="pull-left">
-            <router-link :to="'/user/'+item.eId">
+            <router-link :to="'/user/'+item.eid">
               <img :src="item.avatar" :alt="item.nickname" class="header" />
             </router-link>
           </div>
@@ -25,7 +25,7 @@
             </p>
             <p class="retweet-user">
               作者：
-              <router-link :to="'/user/'+item.eId">{{ item.nickname }}</router-link>
+              <router-link :to="'/user/'+item.eid">{{ item.nickname }}</router-link>
             </p>
           </div>
         </div>
@@ -47,7 +47,7 @@ import Like from "@/components/base/like/like";
 export default {
   data (){
     return {
-      name: ''
+      name: '',
     }
   },
   props: [
@@ -60,17 +60,16 @@ export default {
   methods: {
     toComments(id) {
       this.$router.push({path:'/'+ this.name +'/'+id+'?comments=1'})
-    },
-    init() {
+    }
+  },
+  watch: {
+    type() {
       if(this.type === 100){
         this.name = 'note'
       }else if( this.type === 200 ){
         this.name = 'guide'
       }
     }
-  },
-  created() {
-    this.init()
   }
 }
 </script>

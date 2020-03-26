@@ -1,4 +1,4 @@
-import { post, get, put, _delete } from '@/lin/plugins/axios'
+import { post, get } from '@/lin/plugins/axios'
 import config from '@/config'
 import { formatTime, formatText } from '@/utils'
 import defaultAvatar from "@/assets/img/user/user.png";
@@ -119,14 +119,12 @@ class Guide {
     return res
   }
 
-  async editGuide (id, info) {
-    const res = await put(`v1/guide/${id}`, info)
-    return res
-  }
-
-  async delectGuide (id) {
-    const res = await _delete(`v1/guide/${id}`)
-    return res
+  /**
+   * 获取我的攻略
+   */
+  async getMyGuides () {
+    let res = await get('v1/guide/myGuides')
+    return formatData(res)
   }
 }
 
