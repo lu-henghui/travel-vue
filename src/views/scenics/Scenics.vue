@@ -18,7 +18,7 @@
             <ul>
               <li v-for="(item,idx) in list" :key="idx">
                 <router-link to>
-                  <img :src="item.img" :alt="item.name" />
+                  <img v-lazy="item.img" :alt="item.name" />
                 </router-link>
                 <p>
                   <router-link to class="attractions-name">{{item.name}}</router-link>

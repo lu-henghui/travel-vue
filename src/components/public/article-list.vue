@@ -3,7 +3,7 @@
     <li v-for="(item,idx) in list" :key="idx" class="clearfix">
       <div class="list-avatar pull-left">
         <router-link :to="'/'+ name +'/'+ item.id">
-          <img :src="item.img" :alt="item.title" />
+          <img v-lazy="item.img" :alt="item.title" />
         </router-link>
       </div>
       <div class="list-content pull-left">
@@ -13,7 +13,7 @@
         <div class="retweet clearfix">
           <div class="pull-left">
             <router-link :to="'/user/'+item.eid">
-              <img :src="item.avatar" :alt="item.nickname" class="header" />
+              <img v-lazy="item.avatar" :alt="item.nickname" class="header" />
             </router-link>
           </div>
           <div class="pull-left" style="width:85%;">
@@ -45,7 +45,7 @@
 <script>
 import Like from "@/components/base/like/like";
 export default {
-  data (){
+  data () {
     return {
       name: '',
     }
@@ -58,17 +58,24 @@ export default {
     Like
   },
   methods: {
-    toComments(id) {
-      this.$router.push({path:'/'+ this.name +'/'+id+'?comments=1'})
+    toComments (id) {
+      this.$router.push({ path: '/' + this.name + '/' + id + '?comments=1' })
     }
   },
   watch: {
-    type() {
-      if(this.type === 100){
+    type () {
+      if (this.type === 100) {
         this.name = 'note'
-      }else if( this.type === 200 ){
+      } else if (this.type === 200) {
         this.name = 'guide'
       }
+    }
+  },
+  created () {
+    if (this.type === 100) {
+      this.name = 'note'
+    } else if (this.type === 200) {
+      this.name = 'guide'
     }
   }
 }

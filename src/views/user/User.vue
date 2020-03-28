@@ -7,7 +7,7 @@
             <div class="clearfix">
               <div class="status-avatar pull-left">
                 <span class="avatar-pic">
-                  <el-avatar :size="75" :src="user.avatar"></el-avatar>
+                  <el-avatar shape="square" :size="120" :src="user.avatar"></el-avatar>
                 </span>
               </div>
               <div class="status-content pull-left">
@@ -32,10 +32,10 @@
                   <el-button @click="getMyGuides" size="small">攻略</el-button>
                 </el-badge>
                 <el-badge :value="user.fans" class="item" type="primary">
-                  <el-button size="small">粉丝</el-button>
+                  <el-button @click="getMyFans" size="small">粉丝</el-button>
                 </el-badge>
                 <el-badge :value="user.follows" class="item" type="warning">
-                  <el-button size="small">关注</el-button>
+                  <el-button @click="getMyFollows" size="small">关注</el-button>
                 </el-badge>
               </div>
             </div>
@@ -63,18 +63,18 @@
           <div v-show="showlList===2" class="content">
             <div class="m-note-main clearfix">
               <h2>
-                <router-link to="/note">我的游记</router-link>
+                <router-link to="/note">我的粉丝</router-link>
               </h2>
             </div>
-            <art :list="list" :type="type" />
+            <ulist :list="list" type="0" />
           </div>
           <div v-show="showlList===3" class="content">
             <div class="m-note-main clearfix">
               <h2>
-                <router-link to="/note">我的游记</router-link>
+                <router-link to="/note">我的关注</router-link>
               </h2>
             </div>
-            <art :list="list" :type="type" />
+            <ulist :list="list" type="1" />
           </div>
         </div>
       </el-col>
@@ -83,13 +83,15 @@
 </template>
 <script>
 import User from "@/models/user";
-import note from "@/models/note";
-import guide from "@/models/guide";
+import Note from "@/models/note";
+import Guide from "@/models/guide";
 import Art from "@/components/public/article-list";
+import Ulist from "@/components/public/user-list";
 
 export default {
   components: {
-    Art
+    Art,
+    Ulist
   },
   inject: ['reload'],
   data () {
@@ -158,24 +160,50 @@ export default {
     },
     // 获取我的游记
     async getMyNotes() {
+      this.list = ''
       this.showlList = 0
       this.type = 100
       try {
-        this.list = await note.getMyNotes();
-      } catch (e) {
-        console.log(e)
+        this.list = await Note.getMyNotes();
+      } catch (error) {
+        this.$message(error.data.msg)
+        // console.log(error)
       }
     },
     // 获取我的攻略
     async getMyGuides() {
+      this.list = ''
       this.showlList = 1
       this.type = 200
       try {
-        this.list = await guide.getMyGuides();
-      } catch (e) {
-        console.log(e)
+        this.list = await Guide.getMyGuides();
+      } catch (error) {
+        this.$message(error.data.msg)
+        // console.log(error)
       }
     },
+    // 获取我的粉丝
+    async getMyFans() {
+      this.list = ''
+      this.showlList = 2
+      try {
+        this.list = await User.getMyFans();
+      } catch (error) {
+        this.$message(error.data.msg)
+        // console.log(error)
+      }
+    },
+    // 获取我的关注
+    async getMyFollows() {
+      this.list = ''
+      this.showlList = 3
+      try {
+        this.list = await User.getMyFollows();
+      } catch (error) {
+        this.$message(error.data.msg)
+        // console.log(error)
+      }
+    }
   },
   watch: {
     // eslint-disable-next-line no-unused-vars
@@ -197,7 +225,7 @@ export default {
   }
   .personal-home {
     padding: 25px 10px 0;
-    min-height: 700px;
+    min-height: 400px;
     .info {
       padding: 20px 25px;
       width: 650px;
@@ -242,6 +270,9 @@ export default {
       .ops {
         .item {
           margin-right: 40px;
+          &:nth-child(1) {
+            margin-left: 15px;
+          }
         }
       }
     }

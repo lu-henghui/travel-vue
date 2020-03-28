@@ -3,16 +3,13 @@
     <el-header class="header">
       <div class="m-header">
         <el-row :gutter="0">
-          <el-col :span="5">
-            <geo />
-          </el-col>
-          <el-col :span="8">
+          <el-col :offset="2" :span="9">
             <navbar />
           </el-col>
           <el-col :span="8">
             <search />
           </el-col>
-          <el-col :span="3">
+          <el-col :offset="2" :span="3">
             <user />
           </el-col>
         </el-row>
@@ -30,7 +27,7 @@
 <script>
 // import { NavBar, SideBar, AppMain, ReuseTab, MenuTab, BackTop } from '@/components/layout'
 import { AppMain, BackTop } from '@/components/layout'
-import { Geo, Navbar, Search, User } from '@/components/public/header'
+import { Navbar, Search, User } from '@/components/public/header'
 import { MyFooter } from '@/components/public/footer'
 
 export default {
@@ -47,7 +44,6 @@ export default {
     AppMain,
     BackTop,
     MyFooter,
-    Geo,
     Navbar,
     Search,
     User

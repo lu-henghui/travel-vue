@@ -1,145 +1,48 @@
 <template>
   <div class="search-panel">
-    <div class="wrapper">
-      <el-input v-model="search" @focus="focus" @blur="blur" placeholder="搜索地名" />
-      <button class="el-button el-button--primary">
-        <i class="el-icon-search" />
-      </button>
-      <dl
-        v-if="isHotPlace"
-        class="hotPlace"
-      >
-        <dt>热门搜索</dt>
-        <dd v-for="(item,idx) in hotPlace" :key="idx">
-          {{ item }}
-        </dd>
-      </dl>
-      <dl
-        v-if="isSearchList"
-        class="searchList"
-      >
-        <dd v-for="(item,idx) in searchList" :key="idx">
-          {{ item }}
-        </dd>
-      </dl>
-    </div>
-    <!-- <p class="suggest">
-      <a href="#">广州</a>
-      <a href="#">广州</a>
-      <a href="#">广州</a>
-      <a href="#">广州</a>
-      <a href="#">广州</a>
-      <a href="#">广州</a>
-    </p> -->
+    <el-input placeholder="请输入内容" v-model="input" class="input-with-select">
+      <el-select v-model="select" slot="prepend" placeholder="类型">
+        <el-option label="旅游地" value="1"></el-option>
+        <el-option label="游记" value="2"></el-option>
+        <el-option label="攻略" value="3"></el-option>
+        <el-option label="用户" value="4"></el-option>
+      </el-select>
+      <el-button @click="search" slot="append" icon="el-icon-search"></el-button>
+    </el-input>
   </div>
 </template>
-
 <script>
+
 export default {
   data () {
     return {
-      search: '',
-      isFocus: false,
-      hotPlace: ['火锅', '火锅', '火锅'],
-      searchList: ['火锅', '火锅', '火锅']
-    }
-  },
-  computed: {
-    isHotPlace () {
-      return this.isFocus && !this.search
-    },
-    isSearchList () {
-      return this.isFocus && this.search
+      input: '',
+      select: ''
     }
   },
   methods: {
-    focus () {
-      this.isFocus = true
-    },
-    blur () {
-      const self = this
-      setTimeout(function () {
-        self.isFocus = false
-      }, 200)
+    search () {
+      if(!this.select){
+        this.$message({
+          showClose: true,
+          message: '你没有选择类型',
+          type: 'error'
+        });
+      }else{
+        this.$router.push({ path: '/search?q=' + this.input + '&type=' + this.select })
+      }
     }
   }
 }
 </script>
 <style lang="scss">
 .search-panel {
-  .wrapper {
-    border-radius: 4px;
-    box-sizing: border-box;
-    position: relative;
-    top: 10px;
-    white-space: nowrap;
-    .el-input {
-      width: 262px;
-      input {
-        border: none;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-    }
-    .el-button {
-      position: relative;
-      left: 0px;
-      width: 88px;
-      border: none;
-      font-size: 16px;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      i {
-        font-weight: bold;
-      }
-    }
+  line-height: 60px;
+  .el-select .el-input {
+    width: 100px;
   }
-  .hotPlace,
-  .searchList {
-    position: absolute;
-    top: 41px;
-    left: 0;
-    background: #fff;
-    padding: 10px;
-    font-size: 12px;
-    width: 262px;
-    box-sizing: border-box;
-    border: 1px solid #e5e5e5;
-    border-top: none;
-    z-index: 999;
-    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-
-    dt {
-      color: #999;
-      font-weight: bold;
-    }
-
-    dd {
-      display: inline-block;
-      color: #666;
-      margin-right: 10px;
-      margin-bottom: 3px;
-      margin-top: 5px;
-      cursor: pointer;
-
-      &:hover {
-        background: #f8f8f8;
-        color: #31bbac;
-      }
-    }
-
-    &.searchList {
-      padding: 0;
-      margin: 0;
-      dd {
-        margin: 0;
-        padding: 3px 10px;
-        display: block;
-        line-height: 1.6;
-      }
-    }
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
   }
 }
 </style>

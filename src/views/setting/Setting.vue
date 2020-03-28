@@ -201,7 +201,7 @@ export default {
       if (user) {
         this.form.id = user.id;
         // this.avatar = user.avatar ? user.avatar : defaultAvatar;
-        this.form.nickname = user.nickname ? user.nickname : "佚名";
+        this.form.nickname = user.nickname;
         var arr = user.city.split(/[ ]+/);//以空格分开
         this.city = TextToCode[arr[0]][arr[1]].code;
         console.log(this.city)
@@ -217,9 +217,8 @@ export default {
       this.$refs[formName].validate(async valid => {
         // eslint-disable-line
         if (valid) {
-          const res = await User.updatePassword(this.passwordForm)
-          console.log(res)
-          if (res.error_code === 0) {
+          try {
+            const res = await User.updatePassword(this.passwordForm)
             this.$message.success(`${res.msg}`)
             this.resetForm(formName)
             setTimeout(() => {
@@ -227,9 +226,9 @@ export default {
               const { origin } = window.location
               window.location.href = origin
             }, 1000)
-          }else {
+          } catch (error) {
             console.log('error!!')
-            this.$message.error(`${res.msg}`)
+            this.$message.error(error.data.msg)
           }
         } else {
           console.log('error submit!!')

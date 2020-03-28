@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
+import VueLazyload from 'vue-lazyload'
 
 import '@/lin/plugins'
 
@@ -15,6 +16,12 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  // error: 'dist/error.png',
+  loading: require('@/assets/loading.gif'),
+  attempt: 1
+})
 
 // base 组件注册
 Vue.component('sticky-top', StickyTop)

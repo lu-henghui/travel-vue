@@ -123,7 +123,16 @@ class Note {
    * 获取我的游记
    */
   async getMyNotes () {
-    let res = await get('v1/note/myNotes')
+    let res = await get('v1/note/myNotes', { handleError: true })
+    return formatData(res)
+  }
+
+  /**
+   * 搜索游记
+   * @param {String} search 关键词
+   */
+  async getNoteByKeyword(search) {
+    const res = await get('v1/note/search?q='+ search, { handleError: true })
     return formatData(res)
   }
 }

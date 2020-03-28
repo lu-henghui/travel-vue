@@ -123,7 +123,16 @@ class Guide {
    * 获取我的攻略
    */
   async getMyGuides () {
-    let res = await get('v1/guide/myGuides')
+    let res = await get('v1/guide/myGuides',  { handleError: true })
+    return formatData(res)
+  }
+
+  /**
+   * 搜索攻略
+   * @param {String} search 关键词
+   */
+  async getGuideByKeyword(search) {
+    const res = await get('v1/guide/search?q='+ search, { handleError: true })
     return formatData(res)
   }
 }

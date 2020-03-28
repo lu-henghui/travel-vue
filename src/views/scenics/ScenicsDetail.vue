@@ -9,7 +9,7 @@
               <span>{{ list.scenics.outline }}</span>
             </div>
             <div class="attraction-img">
-              <img :src="list.scenics.image" :alt="list.scenics.name" />
+              <img v-lazy="list.scenics.image" :alt="list.scenics.name" />
             </div>
           </div>
           <div class="map-box clearfix">
@@ -30,7 +30,7 @@
             <ul class="clearfix">
               <li v-for="(item, idx) in list.arounds" :key="idx">
                 <router-link :to="'/scenics/'+item.id">
-                  <img :src="item.image" :alt="item.name" />
+                  <img v-lazy="item.image" :alt="item.name" />
                 </router-link>
                 <router-link class="attractions-name" :to="'/scenics/'+item.id">{{ item.name }}</router-link>
               </li>
@@ -46,6 +46,7 @@
 import Amap from '@/components/base/map/map'
 import scenics from '@/models/scenics'
 export default {
+  inject: ['reload'],
   data () {
     return {
       list: {
@@ -78,6 +79,12 @@ export default {
   async created () {
     this.list = await scenics.getScenics(this.$route.params.id)
     // console.log(this.list)
+  },
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    '$route' (to, from) {
+      this.reload()
+    }
   }
 };
 </script>

@@ -23,7 +23,7 @@
 <script>
 export default {}
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .m-nav {
   float: left;
   margin: 0;

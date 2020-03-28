@@ -269,7 +269,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .m-user {
   line-height: 60px;
   height: 60px;

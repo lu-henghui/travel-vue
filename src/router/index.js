@@ -63,6 +63,11 @@ const homeRouter = [
     name: 'Editor',
     component: () => import('@/views/editor/Editor'),
   },
+  {
+    path: 'search',
+    name: 'Search',
+    component: () => import('@/views/search/Search')
+  }
 ]
 
 const routes = [

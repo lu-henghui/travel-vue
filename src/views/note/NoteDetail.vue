@@ -5,7 +5,7 @@
         <div class="post-list clearfix">
           <div class="status-avatar clearfix">
             <router-link class="avatar-pic" :to="'/user/'+ list.id">
-              <img :src="list.avatar" :alt="list.nickname" />
+              <img v-lazy="list.avatar" :alt="list.nickname" />
             </router-link>
           </div>
           <div class="status-content">

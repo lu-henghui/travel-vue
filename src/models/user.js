@@ -64,7 +64,7 @@ class User {
    * 获取当前用户信息和所拥有的权限
    */
   async getAuths () {
-    const info = await get('v1/user/auths')
+    const info = await get('v1/user/auths', { handleError: true })
     return new User(
       info.email,
       info.avatar,
@@ -79,11 +79,12 @@ class User {
    * @param {string} oldPassword 旧密码
    */
   async updatePassword ({ old_password, new_password, confirm_password }) {
-    return await put('v1/user/change_password', {
+    const res = await put('v1/user/change_password', {
       new_password,
       confirm_password,
       old_password,
-    })
+    }, { handleError: true })
+    return res
   }
 
   /**
@@ -113,6 +114,39 @@ class User {
     return formatAvatar(res)
   }
 
+  /**
+   * 获取我的粉丝
+   */
+  async getMyFans () {
+    const res = await get(`v1/user/myFans`,  { handleError: true })
+    for(var i=0; i<res.length; i++){
+      res[i] = formatAvatar(res[i])
+    }
+    return res
+  }
+
+  /**
+   * 获取我的关注
+   */
+  async getMyFollows () {
+    const res = await get(`v1/user/myFollows`,  { handleError: true })
+    for(var i=0; i<res.length; i++){
+      res[i] = formatAvatar(res[i])
+    }
+    return res
+  }
+
+  /**
+   * 搜索用户
+   * @param {String} search 关键词
+   */
+  async getUserByKeyword(search) {
+    const res = await get('v1/user/search?q='+ search, { handleError: true })
+    for(var i=0; i<res.length; i++){
+      res[i] = formatAvatar(res[i])
+    }
+    return res
+  }
 }
 
 /**

@@ -19,3 +19,9 @@
 .mt40 {
   margin-top: 40px;
 }
+img[lazy='loading']{
+  display:block;
+  width:25px!important;
+  height:25px!important;
+  margin:0 auto;
+}

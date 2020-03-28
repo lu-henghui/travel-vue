@@ -5,18 +5,13 @@
         <a href>推荐景点</a>
       </h2>
     </div>
-    <ul class="m-spot-list clearfix">
-      <li v-for="(item,idx) in list.slice(0,3)" :key="idx">
-        <router-link :to="'/scenics/'+item.id">
-          <img :src="item.image" :alt="item.name" />
-          <p class="m-spot-title">{{ item.name }}</p>
-        </router-link>
-      </li>
-    </ul>
+    <scenics :list="list"  />
   </div>
 </template>
 <script>
 import scenics from "@/models/scenics";
+import Scenics from "@/components/public/scenics-list"
+
 export default {
   data() {
     return {
@@ -24,10 +19,18 @@ export default {
     };
   },
   async mounted() {
-    // 获取最火的三个旅游地
-    this.list = await scenics.getAllScenics();
+    try {
+      // 获取最火的三个旅游地
+      this.list = await scenics.getHotScenics();
+    } catch (error) {
+      console.log(error);
+      this.$message.error(error.data.msg);
+    }
   },
-  methods: {}
+  methods: {},
+  components: {
+    Scenics
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -42,34 +45,6 @@ export default {
       a {
         color: #333;
       }
-    }
-  }
-  .m-spot-list {
-    margin-top: 15px;
-    list-style: none;
-    li {
-      width: 240px;
-      float: left;
-      list-style: none;
-      margin-left: 50px;
-      a {
-        display: block;
-        overflow: hidden;
-        color: #333;
-        text-decoration: none;
-        img {
-          border-radius: 5px;
-          width: 240px;
-          height: 160px;
-          display: inline-block;
-        }
-        p {
-          text-align: center;
-        }
-      }
-    }
-    li:first-child {
-      margin-left: 0px;
     }
   }
 }
