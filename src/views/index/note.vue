@@ -5,7 +5,7 @@
         <router-link to="/note">心醉游记</router-link>
       </h2>
     </div>
-    <note :list="list" :type="type" />
+    <note :list="list" :type="type" :hasDelete="hasDelete" />
   </div>
 </template>
 <script>
@@ -18,6 +18,7 @@ export default {
       id: '',
       list: [],
       type: 100, // 游记类型为100
+      hasDelete: false,
       note: {
         num: 3
       }

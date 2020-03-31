@@ -8,7 +8,7 @@
               <router-link to="/guide">最佳攻略</router-link>
             </h2>
           </div>
-          <guide :list="list" :type="type" />
+          <guide :list="list" :type="type" :hasDelete="hasDelete" />
           <!-- 分页 -->
           <div class="pagination">
             <el-pagination
@@ -43,6 +43,7 @@ export default {
       pageCount: 10, // 每页10条数据
       list: [],
       type: 200, // 攻略类型为200
+      hasDelete: false
     };
   },
   methods: {

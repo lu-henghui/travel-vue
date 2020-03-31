@@ -1,4 +1,4 @@
-import { post, get } from '@/lin/plugins/axios'
+import { post, get, _delete } from '@/lin/plugins/axios'
 import config from '@/config'
 import { formatTime, formatText } from '@/utils'
 import defaultAvatar from "@/assets/img/user/user.png";
@@ -59,10 +59,11 @@ class Guide {
    * 发布游记
    * @param {String} title 标题
    * @param {String} img 封面url
+   * @param {Array} arounds 关联旅游地id数组
    * @param {String} text 发布内容
    */
-  async addGuide ({ title, img, text }) {
-    const res = await post('v1/guide', { title, img, text }, { handleError: true })
+  async addGuide ({ title, img, arounds, text }) {
+    const res = await post('v1/guide', { title, img, arounds, text }, { handleError: true })
     return res
   }
 
@@ -94,7 +95,8 @@ class Guide {
   async getGuide (id) {
     const res = await get(`v1/guide/${id}`)
     // console.log(res)
-    return formatDetailData(res)
+    res.guide = formatDetailData(res.guide)
+    return res
   }
 
   /**
@@ -134,6 +136,15 @@ class Guide {
   async getGuideByKeyword(search) {
     const res = await get('v1/guide/search?q='+ search, { handleError: true })
     return formatData(res)
+  }
+
+  /**
+   * 删除我的攻略
+   * @param {int} id 攻略ID
+   */
+  async deleteGuide (id) {
+    const res = await _delete(`v1/guide/myGuides/${id}`, { handleError: true })
+    return res
   }
 }
 

@@ -28,6 +28,9 @@ class Scenics {
     return res
   }
 
+  /**
+   * 获取所有旅行地
+   */
   async getAllScenics() {
     const res = await get('v1/scenics', { handleError: true })
     return res

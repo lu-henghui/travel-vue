@@ -34,6 +34,9 @@
           <div class="infos pull-left">
             <span class="time">{{ item.create_time }}</span>
           </div>
+          <el-badge class="item" v-show="hasDelete">
+            <el-button @click="toDelete(item.id)" size="small">删除</el-button>
+          </el-badge>
           <el-badge :value="item.commentNum" :max="99" class="item">
             <el-button @click="toComments(item.id)" size="small">评论</el-button>
           </el-badge>
@@ -44,15 +47,21 @@
 </template>
 <script>
 import Like from "@/components/base/like/like";
+import note from "@/models/note"
+import guide from "@/models/guide"
+
 export default {
   data () {
     return {
       name: '',
+      topName: ''
     }
   },
+  inject: ['reload'],
   props: [
     'list',
-    'type'
+    'type',
+    'hasDelete'
   ],
   components: {
     Like
@@ -60,22 +69,54 @@ export default {
   methods: {
     toComments (id) {
       this.$router.push({ path: '/' + this.name + '/' + id + '?comments=1' })
+    },
+    async toDelete (id) {
+      this.$confirm('此操作将永久删除该' +  this.topName + ', 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        let res
+        try {
+          if(this.type === 100)
+            res = await note.deleteNote(id)
+          else if(this.type === 200)
+            res = await guide.deleteGuide(id)
+          console.log(res)
+          this.$message.success(`${res.msg}`)
+          setTimeout(() => {
+            this.reload()
+          }, 1000)
+        } catch (error) {
+          console.log(error)
+          this.$message.error(error.data.msg);
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
     }
   },
   watch: {
     type () {
       if (this.type === 100) {
         this.name = 'note'
+        this.topName = '游记'
       } else if (this.type === 200) {
         this.name = 'guide'
+        this.topName = '攻略'
       }
     }
   },
   created () {
     if (this.type === 100) {
       this.name = 'note'
+      this.topName = '游记'
     } else if (this.type === 200) {
       this.name = 'guide'
+      this.topName = '攻略'
     }
   }
 }

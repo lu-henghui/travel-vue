@@ -5,7 +5,7 @@
         <router-link to="/guide">最佳攻略</router-link>
       </h2>
     </div>
-    <guide :list="list" :type="type" />
+    <guide :list="list" :type="type" :hasDelete="hasDelete" />
   </div>
 </template>
 <script>
@@ -18,6 +18,7 @@ export default {
       id: '',
       list: [],
       type: 200, // 攻略类型为200
+      hasDelete: false,
       guide: {
         num: 3
       }

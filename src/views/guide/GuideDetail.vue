@@ -20,10 +20,10 @@
                 <h4 class="title">相关旅行地</h4>
               </div>
               <ul class="today-notes-list clearfix">
-                <li class="pull-left">
-                  <router-link class="img-box" to>
-                    <img src alt />
-                    <p>杭州</p>
+                <li class="pull-left" v-for="(item, idx) in arounds" :key="idx">
+                  <router-link class="img-box" :to="'/scenics/'+item.id">
+                    <img v-lazy="item.image" :alt="item.name" />
+                    <p>{{item.name}}</p>
                   </router-link>
                 </li>
               </ul>
@@ -40,7 +40,7 @@
 </template>
 <script>
 import Comment from '@/components/base/comment/comment'
-import guide from '@/models/guide'
+import Guide from '@/models/guide'
 
 export default {
   data() {
@@ -56,10 +56,19 @@ export default {
   },
   methods: {
     async initData () {
-      this.list = await guide.getGuide(this.$route.params.id)
-      console.log(this.list)
-      var s = document.getElementById('myContent')
-      s.innerHTML = this.list.text
+      try {
+        let { guide, arounds } = await Guide.getGuide(this.id)
+        // console.log(guide)
+        // console.log(arounds)
+        this.list = guide
+        this.arounds = arounds
+      } catch (error) {
+        console.log(error)
+        this.$message.error(error.data.msg);
+      }
+
+      document.getElementById('myContent').innerHTML = this.list.text
+
       if(this.$route.query.comments){
         this.findComments()
       }
@@ -104,6 +113,7 @@ export default {
     }
     .time {
       color: #666;
+      margin-left: 20px;
     }
     .post-title {
       display: table;
@@ -152,6 +162,7 @@ export default {
         li {
           margin-left: 0;
           width: 230px;
+          margin: 15px 33px 15px 0;
           .img-box {
             display: block;
             overflow: hidden;

@@ -1,4 +1,4 @@
-import { post, get } from '@/lin/plugins/axios'
+import { post, get, _delete } from '@/lin/plugins/axios'
 import config from '@/config'
 import { formatTime, formatText } from '@/utils'
 import defaultAvatar from "@/assets/img/user/user.png";
@@ -59,10 +59,11 @@ class Note {
    * 发布游记
    * @param {String} title 标题
    * @param {String} img 封面url
+   * @param {Array} arounds 关联旅游地id数组
    * @param {String} text 发布内容
    */
-  async addNote ({ title, img, text }) {
-    const res = await post('v1/note', { title, img, text }, { handleError: true })
+  async addNote ({ title, img, arounds, text }) {
+    const res = await post('v1/note', { title, img, arounds, text }, { handleError: true })
     return res
   }
 
@@ -92,9 +93,10 @@ class Note {
    * @param {int} id 游记ID值
    */
   async getNote (id) {
-    const res = await get(`v1/note/${id}`)
+    let res = await get(`v1/note/${id}`, { handleError: true })
     // console.log(res)
-    return formatDetailData(res)
+    res.note = formatDetailData(res.note)
+    return res
   }
 
   /**
@@ -134,6 +136,15 @@ class Note {
   async getNoteByKeyword(search) {
     const res = await get('v1/note/search?q='+ search, { handleError: true })
     return formatData(res)
+  }
+
+  /**
+   * 删除我的游记
+   * @param {int} id 游记ID
+   */
+  async deleteNote (id) {
+    const res = await _delete(`v1/note/myNotes/${id}`, { handleError: true })
+    return res
   }
 }
 

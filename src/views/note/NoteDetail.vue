@@ -20,10 +20,10 @@
                 <h4 class="title">相关旅行地</h4>
               </div>
               <ul class="today-notes-list clearfix">
-                <li class="pull-left">
-                  <router-link class="img-box" to>
-                    <img src alt />
-                    <p>杭州</p>
+                <li class="pull-left" v-for="(item, idx) in arounds" :key="idx">
+                  <router-link class="img-box" :to="'/scenics/'+item.id">
+                    <img v-lazy="item.image" :alt="item.name" />
+                    <p>{{item.name}}</p>
                   </router-link>
                 </li>
               </ul>
@@ -40,7 +40,7 @@
 </template>
 <script>
 import Comment from '@/components/base/comment/comment'
-import note from '@/models/note'
+import Note from '@/models/note'
 
 export default {
   data () {
@@ -48,6 +48,7 @@ export default {
       id: '',
       type: 100,
       list: [],
+      arounds: ''
     }
   },
   async created () {
@@ -56,10 +57,19 @@ export default {
   },
   methods: {
     async initData () {
-      this.list = await note.getNote(this.$route.params.id)
-      console.log(this.list)
-      var s = document.getElementById('myContent')
-      s.innerHTML = this.list.text
+      try {
+        let { note, arounds } = await Note.getNote(this.id)
+        // console.log(note)
+        // console.log(arounds)
+        this.list = note
+        this.arounds = arounds
+      } catch (error) {
+        console.log(error)
+        this.$message.error(error.data.msg);
+      }
+
+      document.getElementById('myContent').innerHTML = this.list.text
+
       if(this.$route.query.comments){
         this.findComments()
       }
@@ -103,6 +113,7 @@ export default {
       text-decoration: none;
     }
     .time {
+      margin-left: 20px;
       color: #666;
     }
     .post-title {
@@ -152,6 +163,7 @@ export default {
         li {
           margin-left: 0;
           width: 230px;
+          margin: 15px 33px 15px 0;
           .img-box {
             display: block;
             overflow: hidden;

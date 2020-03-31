@@ -1,6 +1,6 @@
 <template>
-  <div class="lin-container" v-if="isNote">
-    <div class="lin-title">发布游记</div>
+  <div class="lin-container">
+    <div class="lin-title">发布{{topName}}</div>
     <span>正文长度可达6000个字</span>
     <el-button @click="goBack">返回</el-button>
 
@@ -15,37 +15,30 @@
         <el-form-item label="标题" prop="title">
           <el-input v-model="ruleForm.title"></el-input>
         </el-form-item>
-        <el-form-item label="封面图片" prop="image">
+        <el-form-item label="封面图片" prop="img">
           <upload-imgs ref="uploadEle" :width="240" :height="160" fit="cover" :rules="imageRules" :max-num="1" />
+        </el-form-item>
+        <el-form-item label="关联旅游地" prop="arounds">
+          <el-select
+            v-model="ruleForm.arounds"
+            multiple
+            filterable
+            remote
+            reserve-keyword
+            placeholder="请输入关键词"
+            :remote-method="remoteMethod"
+            :loading="loading">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
         <tinymce v-model="ruleForm.text" @change="change" upload_url="http://dev.lin.colorful3.com/cms/file/" />
-        <el-button type="primary" @click="saveForm('ruleForm')">存为云端草稿</el-button>
-        <el-button type="primary" @click="postNote('ruleForm')">发布</el-button>
-      </el-form>
-    </div>
-  </div>
-  <div class="lin-container" v-else>
-    <div class="lin-title">发布攻略</div>
-    <span>正文长度可达6000个字</span>
-    <el-button @click="goBack">返回</el-button>
-
-    <div class="lin-wrap">
-      <el-form
-        :model="ruleForm"
-        :rules="rules"
-        ref="ruleForm"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-        <el-form-item label="标题" prop="title">
-          <el-input v-model="ruleForm.title"></el-input>
-        </el-form-item>
-        <el-form-item label="封面图片" prop="image">
-          <upload-imgs ref="uploadEle" :width="240" :height="160" fit="cover" :rules="imageRules" :max-num="1" />
-        </el-form-item>
-        <tinymce v-model="ruleForm.text" upload_url="http://dev.lin.colorful3.com/cms/file/" />
-        <el-button type="primary" @click="saveForm('ruleForm')">存为云端草稿</el-button>
-        <el-button type="primary" @click="postGuide('ruleForm')">发布</el-button>
+        <!-- <el-button type="primary" @click="saveForm('ruleForm')">存为云端草稿</el-button> -->
+        <el-button type="primary" @click="post('ruleForm')">发布</el-button>
       </el-form>
     </div>
   </div>
@@ -55,6 +48,8 @@
 import UploadImgs from '@/components/base/upload-imgs'
 import Tinymce from "@/components/base/tinymce";
 import Note from "@/models/note"
+import Guide from "@/models/guide"
+import Scenics from "@/models/scenics"
 
 export default {
   data () {
@@ -62,53 +57,81 @@ export default {
       ruleForm: {
         title: '',
         img: '',
+        arounds: '',
         text: ''
       },
-      isNote: '',
+      name: '',
+      topName: '',
       rules: {
         title: [
           { required: true, message: "请输入标题", trigger: "blur" },
           { min: 3, max: 20, message: "长度在 3 到 20 个字符", trigger: "blur" }
-        ]
+        ],
       },
       imageRules: {
         minWidth: 100,
         minHeight: 100,
         maxSize: 5
-      }
+      },
+      options: [],
+      value: [],
+      list: [],
+      loading: false,
     };
   },
-  created () {
+  async created () {
     this.init();
+    this.list = await Scenics.getAllScenics();
   },
   components: {
     UploadImgs,
     Tinymce
   },
   methods: {
-    init () {
-      if (this.$route.query.type === "note") {
-        this.isNote = true;
+    remoteMethod(query) {
+      if (query !== '') {
+        this.loading = true;
+        setTimeout(() => {
+          this.loading = false;
+          this.options = this.list.filter(item => {
+            return item.name
+              .indexOf(query) > -1;
+          });
+        }, 200);
       } else {
-        this.isNote = false;
+        this.options = [];
       }
     },
-    postNote (formName) {
+    init () {
+      if (this.$route.query.type === "note") {
+        this.name = 'note';
+        this.topName = '游记';
+      } else if  (this.$route.query.type === "guide") {
+        this.name = 'guide';
+        this.topName = '攻略';
+      }
+    },
+    post (formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
-          const list = await this.$refs.uploadEle.getValue()
+          let res
+          let list = await this.$refs.uploadEle.getValue()
           // console.log(list)
           this.ruleForm.img = list[0].src
-          const res = await Note.addNote(this.ruleForm)
-          console.log(res)
-          if (res.error_code === 0) {
+          try {
+            if( this.name === 'note'){
+              res = await Note.addNote(this.ruleForm)
+            }else if ( this.name === 'guide'){
+              res = await Guide.addGuide(this.ruleForm)
+            }
+            console.log(res)
             this.$message.success(`${res.msg}`)
             setTimeout(() => {
-              this.$router.push('/note')
+              this.$router.push('/'+ this.name)
             }, 1000)
-          }else {
-            console.log('error!!')
-            this.$message.error(`${res.msg}`)
+          } catch (error) {
+            console.log(error)
+            this.$message.error(error.data.msg);
           }
         } else {
           console.log("error submit!!");

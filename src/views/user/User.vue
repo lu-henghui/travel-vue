@@ -50,7 +50,7 @@
                 <router-link to="/note">我的游记</router-link>
               </h2>
             </div>
-            <art :list="list" :type="type" />
+            <art :list="list" :type="type" :hasDelete="hasDelete" />
           </div>
           <div v-show="showlList===1" class="content">
             <div class="m-note-main clearfix">
@@ -58,7 +58,7 @@
                 <router-link to="/note">我的攻略</router-link>
               </h2>
             </div>
-            <art :list="list" :type="type" />
+            <art :list="list" :type="type" :hasDelete="hasDelete" />
           </div>
           <div v-show="showlList===2" class="content">
             <div class="m-note-main clearfix">
@@ -99,6 +99,7 @@ export default {
       id: '',
       isMe: false,
       isFollow: false,
+      hasDelete: true,
       user: {
         nickname: "",
         avatar: "",
