@@ -1,7 +1,7 @@
 <template>
   <div class="page-index">
     <el-row>
-      <el-col :span="19">
+      <el-col :span="18">
         <div class="m-note clearfix">
           <div class="m-note-main clearfix">
             <h2>
@@ -23,8 +23,9 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="5">
-        <router-link to="/editor?type=note">发布游记</router-link>
+      <el-col :offset="1" :span="5">
+        <el-button class="post" type="primary" icon="el-icon-edit" @click="post">发布游记</el-button>
+        <recommend />
       </el-col>
     </el-row>
   </div>
@@ -33,6 +34,7 @@
 <script>
 import note from "@/models/note";
 import Note from "@/components/public/article-list";
+import Recommend from "@/components/public/recommend-list";
 
 export default {
   data () {
@@ -85,6 +87,9 @@ export default {
         })
       }
     },
+    post() {
+      this.$router.push({path: '/editor?type=note'})
+    },
     init() {
       const { user } = this.$store.state;
       if (user) {
@@ -97,7 +102,8 @@ export default {
     await this.getAllNotes()
   },
   components: {
-    Note
+    Note,
+    Recommend
   }
 }
 </script>
@@ -117,5 +123,9 @@ export default {
   display: flex;
   justify-content: flex-end;
   margin: 20px;
+}
+.post {
+  margin: 20px auto;
+  display: inherit;
 }
 </style>

@@ -44,33 +44,35 @@
               <em class="declaration">{{user.introduce}}</em>
             </p>
           </div>
-          <div v-show="showlList===0" class="content">
+          <div v-show="showlList===0" class="content-list">
             <div class="m-note-main clearfix">
-              <h2>
-                <router-link to="/note">我的游记</router-link>
+              <h2 class="m-note-left">
+                <router-link to=''>我的游记</router-link>
               </h2>
+              <el-button class="post" type="primary" icon="el-icon-edit" @click="postNote">发布游记</el-button>
             </div>
             <art :list="list" :type="type" :hasDelete="hasDelete" />
           </div>
-          <div v-show="showlList===1" class="content">
+          <div v-show="showlList===1" class="content-list">
             <div class="m-note-main clearfix">
-              <h2>
-                <router-link to="/note">我的攻略</router-link>
+              <h2 class="m-note-left">
+                <router-link to="">我的攻略</router-link>
               </h2>
+              <el-button class="post" type="primary" icon="el-icon-edit" @click="postGuide">发布攻略</el-button>
             </div>
             <art :list="list" :type="type" :hasDelete="hasDelete" />
           </div>
-          <div v-show="showlList===2" class="content">
+          <div v-show="showlList===2" class="content-list">
             <div class="m-note-main clearfix">
-              <h2>
+              <h2 class="m-note-left">
                 <router-link to="/note">我的粉丝</router-link>
               </h2>
             </div>
             <ulist :list="list" type="0" />
           </div>
-          <div v-show="showlList===3" class="content">
+          <div v-show="showlList===3" class="content-list">
             <div class="m-note-main clearfix">
-              <h2>
+              <h2 class="m-note-left">
                 <router-link to="/note">我的关注</router-link>
               </h2>
             </div>
@@ -204,6 +206,12 @@ export default {
         this.$message(error.data.msg)
         // console.log(error)
       }
+    },
+    postNote() {
+      this.$router.push({path: '/editor?type=note'})
+    },
+    postGuide() {
+      this.$router.push({path: '/editor?type=guide'})
     }
   },
   watch: {
@@ -256,6 +264,7 @@ export default {
           color: #222;
           display: inline-block;
           h2 {
+            margin: 0 20px 0;
             font-weight: 700;
             line-height: 1.1;
           }
@@ -286,16 +295,21 @@ export default {
         font-style: normal;
       }
     }
-    .content{
+    .content-list{
       width: 840px;
       margin-top: 40px;
     }
   }
 }
-.m-note-main h2 {
-  float: left;
-  font-size: 18px;
-  font-weight: 700;
+.m-note-main {
+  .m-note-left {
+    float: left;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .post {
+    float: right;
+  }
   a {
     color: #333;
   }

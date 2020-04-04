@@ -1,7 +1,7 @@
 <template>
   <div class="page-index">
     <el-row>
-      <el-col :span="19">
+      <el-col :span="18">
         <div class="post-list clearfix">
           <div class="status-avatar clearfix">
             <router-link class="avatar-pic" :to="'/user/'+ list.id">
@@ -32,8 +32,9 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="5">
-        <router-link to="/main">近期热点</router-link>
+      <el-col :offset="1" :span="5">
+        <el-button class="post" type="primary" icon="el-icon-edit" @click="post">发布攻略</el-button>
+        <recommend />
       </el-col>
     </el-row>
   </div>
@@ -41,6 +42,7 @@
 <script>
 import Comment from '@/components/base/comment/comment'
 import Guide from '@/models/guide'
+import Recommend from "@/components/public/recommend-list";
 
 export default {
   data() {
@@ -48,6 +50,7 @@ export default {
       id: '',
       type: 200,
       list: [],
+      arounds: []
     }
   },
   async created(){
@@ -77,10 +80,14 @@ export default {
       setTimeout(() => {
         document.querySelector('#comments').scrollIntoView({ behavior: "smooth" });
       }, 1000)
-    }
+    },
+    post() {
+      this.$router.push({path: '/editor?type=guide'})
+    },
   },
   components: {
-    Comment
+    Comment,
+    Recommend
   }
 }
 </script>
@@ -187,5 +194,9 @@ export default {
       }
     }
   }
+}
+.post {
+  margin: 20px auto;
+  display: inherit;
 }
 </style>

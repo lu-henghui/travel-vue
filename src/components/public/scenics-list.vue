@@ -23,7 +23,8 @@ export default {
     width: 240px;
     float: left;
     list-style: none;
-    margin-left: 50px;
+    margin-right: 25px;
+    margin-bottom: 20px;
     a {
       display: block;
       overflow: hidden;
@@ -37,6 +38,8 @@ export default {
       }
       p {
         text-align: center;
+        font-size: 16px;
+        padding: 5px;
       }
     }
   }

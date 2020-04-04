@@ -203,7 +203,7 @@ export default {
           method: 'put',
           url: '/v1/user/avatar',
           data: {
-            avatar: res[0].path,
+            avatar: res[0].url,
           },
         })
           .then(putRes => {
@@ -450,5 +450,11 @@ export default {
   border-style: dashed;
   font-size: 0;
   border-width: 2px;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 </style>

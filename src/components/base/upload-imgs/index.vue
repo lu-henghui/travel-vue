@@ -544,7 +544,8 @@ export default {
         // eslint-disable-next-line
         imgItem.display = res.url
         // eslint-disable-next-line
-        imgItem.src = res.path
+        // imgItem.src = res.path
+        imgItem.src = res.url
         // eslint-disable-next-line
         imgItem.imgId = res.id
         // eslint-disable-next-line

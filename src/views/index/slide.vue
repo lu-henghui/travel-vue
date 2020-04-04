@@ -7,7 +7,7 @@
             <h3>{{ item.date }}</h3>
             <h3>{{ item.title }}</h3>
           </div>
-          <img v-lazy="item.img" :alt="item.title" />
+          <img :src="item.img" :alt="item.title" />
         </router-link>
       </el-carousel-item>
     </el-carousel>

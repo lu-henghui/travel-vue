@@ -1,7 +1,7 @@
 <template>
   <div class="page-index">
     <el-row>
-      <el-col :span="19">
+      <el-col :span="18">
         <div v-show="type==1" class="m-note clearfix">
           <div class="m-note-main clearfix">
             <h2>
@@ -39,7 +39,8 @@
           <user :list="userList" type="0" />
         </div>
       </el-col>
-      <el-col :span="5">
+      <el-col :offset="1" :span="5">
+        <recommend />
       </el-col>
     </el-row>
   </div>
@@ -54,13 +55,15 @@ import Scenics from "@/components/public/scenics-list"
 import Note from "@/components/public/article-list";
 import Guide from "@/components/public/article-list";
 import User from "@/components/public/user-list";
+import Recommend from "@/components/public/recommend-list";
 
 export default {
   components: {
     Scenics,
     Note,
     Guide,
-    User
+    User,
+    Recommend
   },
   inject: ['reload'],
   data () {

@@ -4,7 +4,7 @@
       <div class="clearfix">
         <div class="status-avatar pull-left">
           <router-link class="avatar-pic" :to='"/user/" + item.id'>
-            <el-avatar shape="square" :size="120" v-lazy="item.avatar"></el-avatar>
+            <el-avatar shape="square" :size="120" :src="item.avatar"></el-avatar>
           </router-link>
         </div>
         <div class="status-content pull-left">

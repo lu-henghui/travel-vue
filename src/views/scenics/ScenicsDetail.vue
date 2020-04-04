@@ -1,12 +1,12 @@
 <template>
   <div class="page-index">
     <el-row>
-      <el-col :span="19">
+      <el-col :span="18">
         <div class="s-main">
           <div class="top-info">
             <div class="clearfix">
               <h1 class="pull-left">{{ list.scenics.name }}</h1>
-              <span>{{ list.scenics.outline }}</span>
+              <!-- <like :art_id="item.id" :type="type" :like_count="item.praise" :liked="item.liked" /> -->
             </div>
             <div class="attraction-img">
               <img v-lazy="list.scenics.image" :alt="list.scenics.name" />
@@ -36,15 +36,45 @@
               </li>
             </ul>
           </div>
+          <div class="attractions-list" >
+            <div class="list-header clearfix">
+              <p class="title">相关游记</p>
+            </div>
+            <ul class="clearfix" v-if="list.notes">
+              <li v-for="(item, idx) in list.notes" :key="idx">
+                <router-link :to="'/note/'+item.id">
+                  <img v-lazy="item.img" :alt="item.title" />
+                </router-link>
+                <router-link class="attractions-name" :to="'/note/'+item.id">{{ item.title }}</router-link>
+              </li>
+            </ul>
+          </div>
+          <div class="attractions-list">
+            <div class="list-header clearfix">
+              <p class="title">相关攻略</p>
+            </div>
+            <ul class="clearfix">
+              <li v-for="(item, idx) in list.guides" :key="idx">
+                <router-link :to="'/guide/'+item.id">
+                  <img v-lazy="item.img" :alt="item.title" />
+                </router-link>
+                <router-link class="attractions-name" :to="'/guide/'+item.id">{{ item.title }}</router-link>
+              </li>
+            </ul>
+          </div>
         </div>
       </el-col>
-      <el-col :span="5" />
+      <el-col :offset="1" :span="5">
+        <recommend />
+      </el-col>
     </el-row>
   </div>
 </template>
 <script>
 import Amap from '@/components/base/map/map'
 import scenics from '@/models/scenics'
+import Recommend from "@/components/public/recommend-list";
+
 export default {
   inject: ['reload'],
   data () {
@@ -63,18 +93,16 @@ export default {
             id: '',
             name: '',
             image: ''
-          },
-          {
-            id: '',
-            name: '',
-            image: ''
           }
-        ]
+        ],
+        notes: [],
+        guides: []
       }
     }
   },
   components: {
-    Amap
+    Amap,
+    Recommend
   },
   async created () {
     this.list = await scenics.getScenics(this.$route.params.id)

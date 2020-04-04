@@ -3,7 +3,7 @@
     <el-header class="header">
       <div class="m-header">
         <el-row :gutter="0">
-          <el-col :offset="2" :span="9">
+          <el-col :span="11">
             <navbar />
           </el-col>
           <el-col :span="8">

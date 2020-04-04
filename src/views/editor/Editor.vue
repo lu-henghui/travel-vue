@@ -1,9 +1,7 @@
 <template>
   <div class="lin-container">
-    <div class="lin-title">发布{{topName}}</div>
-    <span>正文长度可达6000个字</span>
-    <el-button @click="goBack">返回</el-button>
-
+    <el-page-header @back="goBack" :content="'发布'+topName">
+    </el-page-header>
     <div class="lin-wrap">
       <el-form
         :model="ruleForm"
@@ -38,7 +36,7 @@
         </el-form-item>
         <tinymce v-model="ruleForm.text" @change="change" upload_url="http://dev.lin.colorful3.com/cms/file/" />
         <!-- <el-button type="primary" @click="saveForm('ruleForm')">存为云端草稿</el-button> -->
-        <el-button type="primary" @click="post('ruleForm')">发布</el-button>
+        <el-button class="post" type="primary" @click="post('ruleForm')">发布</el-button>
       </el-form>
     </div>
   </div>
@@ -65,7 +63,7 @@ export default {
       rules: {
         title: [
           { required: true, message: "请输入标题", trigger: "blur" },
-          { min: 3, max: 20, message: "长度在 3 到 20 个字符", trigger: "blur" }
+          { min: 3, message: "长度不少于3个字", trigger: "blur" }
         ],
       },
       imageRules: {
@@ -153,4 +151,12 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.el-page-header{
+  margin: 30px auto;
+}
+.post{
+  float: right;
+  margin-top: 20px;
+}
+</style>

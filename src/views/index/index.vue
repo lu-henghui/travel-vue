@@ -6,12 +6,14 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="19">
+      <el-col :span="18">
         <scenics />
         <note />
         <guide />
       </el-col>
-      <el-col :span="5" />
+      <el-col :offset="1" :span="5">
+        <recommend />
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -21,12 +23,15 @@ import Slide from "@/views/index/slide";
 import Scenics from "@/views/index/scenics";
 import Note from "@/views/index/note";
 import Guide from "@/views/index/guide";
+import Recommend from "@/components/public/recommend-list";
+
 export default {
   components: {
     Slide,
     Scenics,
     Note,
-    Guide
+    Guide,
+    Recommend
   }
 };
 </script>

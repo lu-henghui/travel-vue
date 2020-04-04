@@ -31,7 +31,7 @@ class Guide {
     res = await get('v1/guide/guides', {
       count,
       page,
-    })
+    }, { handleError: true })
     // console.log(res)
     res.items = formatData(res.items)
     // console.log(res)
@@ -48,7 +48,7 @@ class Guide {
     res = await get('v1/guide/login/guides', {
       count,
       page,
-    })
+    }, { handleError: true })
     // console.log(res)
     res.items = formatData(res.items)
     // console.log(res)
@@ -93,7 +93,7 @@ class Guide {
    * @param {int} id 游记ID值
    */
   async getGuide (id) {
-    const res = await get(`v1/guide/${id}`)
+    const res = await get(`v1/guide/${id}`,{ handleError: true })
     // console.log(res)
     res.guide = formatDetailData(res.guide)
     return res
@@ -136,6 +136,14 @@ class Guide {
   async getGuideByKeyword(search) {
     const res = await get('v1/guide/search?q='+ search, { handleError: true })
     return formatData(res)
+  }
+
+  /**
+   * 获取推荐攻略
+   */
+  async getRecommendGuides() {
+    const res = await get('v1/guide/recommend', { handleError: true })
+    return res
   }
 
   /**

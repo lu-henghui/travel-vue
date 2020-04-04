@@ -1,7 +1,6 @@
 import { post, get, put } from '@/lin/plugins/axios'
 import { saveTokens } from '@/lin/utils/token'
 import defaultAvatar from "@/assets/img/user/user.png";
-import config from '@/config'
 
 // 我们通过 class 这样的语法糖使模型这个概念更加具象化，其优点：耦合性低、可维护性。
 class User {
@@ -154,9 +153,7 @@ class User {
  * @param {array} res 游记内容
  */
 function formatAvatar (res) {
-  if ( res.avatar && res.avatar.indexOf('http') < 0) {
-    res.avatar = config.baseURL + 'assets/' + res.avatar
-  }else{
+  if ( !res.avatar ) {
     res.avatar = defaultAvatar
   }
   return res

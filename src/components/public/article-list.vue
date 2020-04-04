@@ -142,7 +142,7 @@ export default {
       }
     }
     .list-content {
-      width: 530px;
+      width: 510px;
       position: relative;
       .praise-box {
         position: absolute;

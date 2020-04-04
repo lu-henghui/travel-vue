@@ -1,7 +1,7 @@
 <template>
   <div class="page-index">
     <el-row>
-      <el-col :span="19">
+      <el-col :span="18">
         <div class="m-note clearfix">
           <div class="m-note-main clearfix">
             <h2>
@@ -23,8 +23,9 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="5">
-        <router-link to="/editor?type=guide">发布攻略</router-link>
+      <el-col :offset="1" :span="5">
+        <el-button class="post" type="primary" icon="el-icon-edit" @click="post">发布攻略</el-button>
+        <recommend />
       </el-col>
     </el-row>
   </div>
@@ -33,6 +34,7 @@
 <script>
 import guide from "@/models/guide";
 import Guide from "@/components/public/article-list";
+import Recommend from "@/components/public/recommend-list";
 
 export default {
   data () {
@@ -91,13 +93,17 @@ export default {
         this.id = user.id;
       }
     },
+    post() {
+      this.$router.push({path: '/editor?type=guide'})
+    },
   },
   async created() {
     this.init();
     await this.getAllGuides()
   },
   components: {
-    Guide
+    Guide,
+    Recommend
   }
 }
 </script>
@@ -112,85 +118,14 @@ export default {
       color: #333;
     }
   }
-  .m-note-list {
-    list-style: none;
-    li {
-      padding: 15px;
-      margin-top: 37px;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      border-radius: 5px;
-      box-shadow: 1px 2px 3px rgba(232, 232, 232, 0.8);
-      .list-avatar {
-        width: 240px;
-        height: 160px;
-        margin-right: 15px;
-        img {
-          width: 240px;
-          height: 160px;
-          border-radius: 5px;
-        }
-      }
-      .list-content {
-        width: 530px;
-        position: relative;
-        .praise-box {
-          position: absolute;
-          width: 32px;
-          height: 32px;
-          text-align: center;
-          top: 0;
-          right: 0;
-        }
-        .retweet {
-          .header {
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
-            border-radius: 5px;
-          }
-          .retweet-title {
-            line-height: 1.4;
-            a {
-              color: #696;
-              font-size: 16px;
-              font-weight: 700;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-            }
-          }
-          .retweet-user {
-            color: #a4a4a4;
-            margin-bottom: 0;
-            a {
-              color: #a4a4a4;
-            }
-          }
-        }
-        .re-summary {
-          overflow: hidden;
-          margin-top: 10px;
-          height: 66px;
-          line-height: 22px;
-        }
-        .meta {
-          margin-top: 17px;
-          .el-badge{
-            float: right;
-            margin-left: 30px;
-          }
-        }
-      }
-    }
-    li:first-child {
-      margin-top: 13px;
-    }
-  }
 }
 .pagination {
   display: flex;
   justify-content: flex-end;
   margin: 20px;
+}
+.post {
+  margin: 20px auto;
+  display: inherit;
 }
 </style>

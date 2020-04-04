@@ -1,5 +1,8 @@
 <template>
   <div class="m-nav clearfix">
+    <div class="title">
+      <p>游乐记</p>
+    </div>
     <div class="logo">
       <img src="@/assets/img/logo.png" alt="" />
     </div>
@@ -32,6 +35,19 @@ export default {}
   line-height: 60px;
   font-size: 18px;
   font-weight: 400;
+  .title{
+    height: 60px;
+    float: left;
+    line-height: 60px;
+    margin-right: 30px;
+    p{
+      font-size: 30px;
+      margin: 0 30px;
+      color: #eee;
+      font-weight: 500;
+    }
+  }
+
   .logo {
     height: 60px;
     float: left;
