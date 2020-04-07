@@ -16,7 +16,7 @@
         <el-form-item label="封面图片" prop="img">
           <upload-imgs ref="uploadEle" :width="240" :height="160" fit="cover" :rules="imageRules" :max-num="1" />
         </el-form-item>
-        <el-form-item label="关联旅游地" prop="arounds">
+        <el-form-item label="关联景点" prop="arounds">
           <el-select
             v-model="ruleForm.arounds"
             multiple

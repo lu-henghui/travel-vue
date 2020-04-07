@@ -4,11 +4,11 @@
       <h2>推荐热点</h2>
     </div>
     <ul class="m-re-list clearfix">
-      <li v-for="(item,idx) in nlist" :key="idx" class="clearfix">
+      <li v-for="(item,nidx) in nlist" :key="'n'+nidx" class="clearfix">
         <router-link :to="'/note/'+ item.id"><img :src="item.img" :alt="item.title"></router-link>
         <router-link :to="'/note/'+ item.id">{{item.title}}</router-link>
       </li>
-      <li v-for="(item,idx) in glist" :key="idx" class="clearfix">
+      <li v-for="(item,gidx) in glist" :key="'g'+gidx" class="clearfix">
         <router-link :to="'/guide/'+ item.id"><img :src="item.img" :alt="item.title"></router-link>
         <router-link :to="'/guide/'+ item.id">{{item.title}}</router-link>
       </li>

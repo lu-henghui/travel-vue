@@ -12,7 +12,7 @@
         <router-link to="/">首页</router-link>
       </li>
       <li class="list">
-        <router-link to="/scenics">旅行地</router-link>
+        <router-link to="/scenics">景点</router-link>
       </li>
       <li class="list">
         <router-link to="/guide">攻略</router-link>

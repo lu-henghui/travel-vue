@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-clickoutside="hideReplyBtn" @click="inputFocus" class="my-reply"   id="comments">
+  <div class="comment-main clearfix">
+    <div v-clickoutside="hideReplyBtn" @click="inputFocus" class="my-reply" id="comments">
       <el-avatar class="header-img" :size="40" :src="myHeader"></el-avatar>
       <div class="reply-info">
         <div
@@ -48,7 +48,7 @@
           </div>
           <div class="talk-box">
             <p>
-              <span>回复 {{reply.toName}}:</span>
+              <span class="replyName">回复 {{reply.toName}}:</span>
               <span class="reply">{{reply.comment}}</span>
             </p>
           </div>
@@ -126,73 +126,7 @@ export default {
       myId: '',
       to: '',
       toId: -1,
-      comments: [
-        // {
-        //   name: 'Lana Del Rey',
-        //   id: 19870621,
-        //   headImg: 'https://ae01.alicdn.com/kf/Hd60a3f7c06fd47ae85624badd32ce54dv.jpg',
-        //   comment: '我发布一张新专辑Norman Fucking Rockwell,大家快来听啊',
-        //   time: '2019年9月16日 18:43',
-        //   commentNum: 2,
-        //   like_num: 15,
-        //   inputShow: false,
-        //   reply: [
-        //     {
-        //       fromName: 'Taylor Swift',
-        //       fromId: 19891221,
-        //       fromHeadImg: 'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
-        //       to: 'Lana Del Rey',
-        //       toId: 19870621,
-        //       comment: '我很喜欢你的新专辑！！',
-        //       time: '2019年9月16日 18:43',
-        //       inputShow: false
-        //     },
-        //     {
-        //       fromName: 'Ariana Grande',
-        //       fromId: 1123,
-        //       fromHeadImg: 'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
-        //       to: 'Lana Del Rey',
-        //       toId: 19870621,
-        //       comment: '别忘记宣传我们的合作单曲啊',
-        //       time: '2019年9月16日 18:43',
-        //       inputShow: false
-        //     }
-        //   ]
-        // },
-        // {
-        //   name: 'Taylor Swift',
-        //   id: 19891221,
-        //   headImg: 'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
-        //   comment: '我发行了我的新专辑Lover',
-        //   time: '2019年9月16日 18:43',
-        //   commentNum: 1,
-        //   like_num: 5,
-        //   inputShow: false,
-        //   reply: [
-        //     {
-        //       fromName: 'Lana Del Rey',
-        //       fromId: 19870621,
-        //       fromHeadImg: 'https://ae01.alicdn.com/kf/Hd60a3f7c06fd47ae85624badd32ce54dv.jpg',
-        //       to: 'Taylor Swift',
-        //       toId: 19891221,
-        //       comment: '新专辑和speak now 一样棒！',
-        //       time: '2019年9月16日 18:43',
-        //       commentNum: 25,
-        //       inputShow: false
-        //     }
-        //   ]
-        // },
-        // {
-        //   name: 'Norman Fucking Rockwell',
-        //   id: 20190830,
-        //   headImg: 'https://ae01.alicdn.com/kf/Hdd856ae4c81545d2b51fa0c209f7aa28Z.jpg',
-        //   comment: 'Plz buy Norman Fucking Rockwell on everywhere',
-        //   time: '2019年9月16日 18:43',
-        //   commentNum: 0,
-        //   inputShow: false,
-        //   reply: []
-        // },
-      ]
+      comments: []
     }
   },
   async created () {
@@ -301,116 +235,126 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.my-reply {
-  padding: 10px;
-  background-color: #fafbfc;
-  .header-img {
-    display: inline-block;
-    vertical-align: top;
-  }
-  .reply-info {
-    display: inline-block;
-    margin-left: 5px;
-    width: 90%;
-    @media screen and (max-width: 1200px) {
-      width: 80%;
+.comment-main{
+  float: left;
+  width: 100%;
+  .my-reply {
+    padding: 10px;
+    background-color: #fafbfc;
+    .header-img {
+      display: inline-block;
+      vertical-align: top;
     }
+    .reply-info {
+      display: inline-block;
+      margin-left: 5px;
+      width: 90%;
+      @media screen and (max-width: 1200px) {
+        width: 80%;
+      }
+      .reply-input {
+        min-height: 20px;
+        line-height: 22px;
+        padding: 10px 10px;
+        color: #333;
+        background-color: #fff;
+        border-radius: 5px;
+        &:empty:before {
+          content: attr(placeholder);
+        }
+        &:focus:before {
+          content: none;
+        }
+        &:focus {
+          padding: 8px 8px;
+          border: 2px solid blue;
+          box-shadow: none;
+          outline: none;
+        }
+      }
+    }
+    .reply-btn-box {
+      height: 25px;
+      margin: 10px 0;
+      .reply-btn {
+        position: relative;
+        float: right;
+        margin-right: 15px;
+      }
+    }
+  }
+  .my-comment-reply {
+    margin-left: 50px;
     .reply-input {
-      min-height: 20px;
-      line-height: 22px;
-      padding: 10px 10px;
-      color: #333;
-      background-color: #fff;
-      border-radius: 5px;
-      &:empty:before {
-        content: attr(placeholder);
-      }
-      &:focus:before {
-        content: none;
-      }
-      &:focus {
-        padding: 8px 8px;
-        border: 2px solid blue;
-        box-shadow: none;
-        outline: none;
-      }
+      width: flex;
     }
   }
-  .reply-btn-box {
-    height: 25px;
-    margin: 10px 0;
-    .reply-btn {
-      position: relative;
+  .author-title:not(:last-child) {
+    border-bottom: 1px solid rgba(178, 186, 194, 0.3);
+  }
+  .author-title {
+    padding: 10px;
+    .header-img {
+      display: inline-block;
+      vertical-align: top;
+    }
+    .author-info {
+      display: inline-block;
+      margin-left: 5px;
+      width: 60%;
+      height: 40px;
+      line-height: 20px;
+      > span {
+        display: block;
+        cursor: pointer;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .author-name {
+        color: #000;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .author-time {
+        font-size: 14px;
+      }
+    }
+    .icon-btn {
+      width: 30%;
+      padding: 0 !important ;
       float: right;
-      margin-right: 15px;
+      @media screen and (max-width: 1200px) {
+        width: 20%;
+        padding: 7px;
+      }
+      > span {
+        cursor: pointer;
+      }
+      .iconfont {
+        margin: 0 5px;
+      }
     }
-  }
-}
-.my-comment-reply {
-  margin-left: 50px;
-  .reply-input {
-    width: flex;
-  }
-}
-.author-title:not(:last-child) {
-  border-bottom: 1px solid rgba(178, 186, 194, 0.3);
-}
-.author-title {
-  padding: 10px;
-  .header-img {
-    display: inline-block;
-    vertical-align: top;
-  }
-  .author-info {
-    display: inline-block;
-    margin-left: 5px;
-    width: 60%;
-    height: 40px;
-    line-height: 20px;
-    > span {
-      display: block;
-      cursor: pointer;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+    .talk-box {
+      margin: 0 50px;
+      > p {
+        margin: 0;
+      }
+      .replyName{
+        color: #888;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+      .reply {
+        font-size: 16px;
+        color: #222;
+        line-height: 1.4;
+      }
     }
-    .author-name {
-      color: #000;
-      font-size: 18px;
-      font-weight: bold;
+    .reply-box {
+      margin: 10px 0 0 50px;
+      background-color: #efefef;
     }
-    .author-time {
-      font-size: 14px;
-    }
-  }
-  .icon-btn {
-    width: 30%;
-    padding: 0 !important ;
-    float: right;
-    @media screen and (max-width: 1200px) {
-      width: 20%;
-      padding: 7px;
-    }
-    > span {
-      cursor: pointer;
-    }
-    .iconfont {
-      margin: 0 5px;
-    }
-  }
-  .talk-box {
-    margin: 0 50px;
-    > p {
-      margin: 0;
-    }
-    .reply {
-      font-size: 16px;
-      color: #000;
-    }
-  }
-  .reply-box {
-    margin: 10px 0 0 50px;
-    background-color: #efefef;
   }
 }
 </style>

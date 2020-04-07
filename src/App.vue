@@ -40,11 +40,4 @@ export default {
   height: 100vh;
   margin: 0;
 }
-.pull-left {
-  float: left !important;
-}
-
-.pull-right {
-  float: right !important;
-}
 </style>

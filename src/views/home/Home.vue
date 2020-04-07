@@ -69,6 +69,9 @@ export default {
     margin: 0 auto;
   }
 }
+.el-footer{
+  height: auto!important;
+}
 
 .layout-default {
   -webkit-font-smoothing: antialiased;

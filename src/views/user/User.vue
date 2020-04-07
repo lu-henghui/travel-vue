@@ -32,10 +32,10 @@
                   <el-button @click="getMyGuides" size="small">攻略</el-button>
                 </el-badge>
                 <el-badge :value="user.fans" class="item" type="primary">
-                  <el-button @click="getMyFans" size="small">粉丝</el-button>
+                  <el-button @click="getFansById" size="small">粉丝</el-button>
                 </el-badge>
                 <el-badge :value="user.follows" class="item" type="warning">
-                  <el-button @click="getMyFollows" size="small">关注</el-button>
+                  <el-button @click="getFollowsById" size="small">关注</el-button>
                 </el-badge>
               </div>
             </div>
@@ -185,23 +185,23 @@ export default {
         // console.log(error)
       }
     },
-    // 获取我的粉丝
-    async getMyFans() {
+    // 获取用户ID的粉丝
+    async getFansById() {
       this.list = ''
       this.showlList = 2
       try {
-        this.list = await User.getMyFans();
+        this.list = await User.getFansById(this.id);
       } catch (error) {
         this.$message(error.data.msg)
         // console.log(error)
       }
     },
-    // 获取我的关注
-    async getMyFollows() {
+    // 获取用户ID的关注
+    async getFollowsById() {
       this.list = ''
       this.showlList = 3
       try {
-        this.list = await User.getMyFollows();
+        this.list = await User.getFollowsById(this.id);
       } catch (error) {
         this.$message(error.data.msg)
         // console.log(error)

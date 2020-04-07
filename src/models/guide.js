@@ -1,5 +1,4 @@
 import { post, get, _delete } from '@/lin/plugins/axios'
-import config from '@/config'
 import { formatTime, formatText } from '@/utils'
 import defaultAvatar from "@/assets/img/user/user.png";
 
@@ -164,13 +163,8 @@ class Guide {
  */
 function formatData (res) {
   for (var i = 0; i < res.length; i++) {
-    if ( res[i].avatar && res[i].avatar.indexOf('http') < 0) {
-      res[i].avatar = config.baseURL + 'assets/' + res[i].avatar
-    }else{
+    if ( !res[i].avatar ) {
       res[i].avatar = defaultAvatar
-    }
-    if (res[i].img.indexOf('http') < 0) {
-      res[i].img = config.baseURL + 'assets/' + res[i].img
     }
     res[i].summary = formatText(res[i].text)
     res[i].create_time = formatTime(res[i].create_time)
@@ -183,9 +177,7 @@ function formatData (res) {
  * @param {array} res 游记内容
  */
 function formatDetailData (res) {
-  if ( res.avatar && res.avatar.indexOf('http') < 0) {
-    res.avatar = config.baseURL + 'assets/' + res.avatar
-  }else{
+  if ( !res.avatar ) {
     res.avatar = defaultAvatar
   }
   res.create_time = formatTime1(res.create_time)

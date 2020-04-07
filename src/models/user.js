@@ -96,7 +96,7 @@ class User {
   }
 
   /**
-   * 关注用户
+   * 取消关注用户
    * @param {int} id 被关注用户ID
    */
   async unfollow ({ id }) {
@@ -114,10 +114,11 @@ class User {
   }
 
   /**
-   * 获取我的粉丝
+   * 获取用户ID的粉丝
+   * @param {int} id 当前用户ID
    */
-  async getMyFans () {
-    const res = await get(`v1/user/myFans`,  { handleError: true })
+  async getFansById (id) {
+    const res = await get(`v1/user/fans/${id}`,  { handleError: true })
     for(var i=0; i<res.length; i++){
       res[i] = formatAvatar(res[i])
     }
@@ -125,10 +126,11 @@ class User {
   }
 
   /**
-   * 获取我的关注
+   * 获取用户ID的关注
+   * @param {int} id 当前用户ID
    */
-  async getMyFollows () {
-    const res = await get(`v1/user/myFollows`,  { handleError: true })
+  async getFollowsById (id) {
+    const res = await get(`v1/user/follows/${id}`,  { handleError: true })
     for(var i=0; i<res.length; i++){
       res[i] = formatAvatar(res[i])
     }

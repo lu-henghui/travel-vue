@@ -15,21 +15,21 @@
               <h1 class="title">{{ list.title }}</h1>
             </div>
             <div class="content" id="myContent"></div>
-            <div class="attractions-list clearfix">
-              <div class="list-header clearfix">
-                <h4 class="title">相关旅行地</h4>
-              </div>
-              <ul class="today-notes-list clearfix">
-                <li class="pull-left" v-for="(item, idx) in arounds" :key="idx">
-                  <router-link class="img-box" :to="'/scenics/'+item.id">
-                    <img v-lazy="item.image" :alt="item.name" />
-                    <p>{{item.name}}</p>
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-            <comment :id="id" :type="type" />
           </div>
+          <div class="attractions-list clearfix">
+            <div class="list-header clearfix">
+              <h4 class="title">相关旅行地</h4>
+            </div>
+            <ul class="today-notes-list clearfix">
+              <li class="pull-left" v-for="(item, idx) in arounds" :key="idx">
+                <router-link class="img-box" :to="'/scenics/'+item.id">
+                  <img v-lazy="item.image" :alt="item.name" />
+                  <p>{{item.name}}</p>
+                </router-link>
+              </li>
+            </ul>
+          </div>
+          <comment :id="id" :type="type" />
         </div>
       </el-col>
       <el-col :offset="1" :span="5">
@@ -93,10 +93,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .post-list {
-  margin-top: 25px;
+  margin-top: 20px;
   .status-avatar {
     float: left;
     margin-right: 15px;
+    padding: 15px 0 0 10px;
     .avatar-pic {
       display: block;
       width: 50px;
@@ -114,6 +115,7 @@ export default {
     position: relative;
     color: #222;
     float: left;
+    padding: 15px 0;
     .user-name {
       color: #696;
       text-decoration: none;
@@ -134,61 +136,57 @@ export default {
         color: #333 !important;
       }
     }
-    .content {
-      margin-bottom: 10px;
-      font-size: 14px;
-      line-height: 22px;
-      color: #222;
-      word-wrap: break-word;
-    }
-    .attractions-list {
-      margin-bottom: 5px;
-      margin-top: 40px;
-      text-align: center;
-      .list-header {
-        border-top: 1px #ccc solid;
-        position: relative;
-        height: 30px;
-        margin-top: 20px;
-        .title {
-          display: inline-block;
-          position: absolute;
-          top: 50%;
-          left: 42%;
-          margin: -32px 0 0;
-          width: 16%;
-          background: #fff;
-          line-height: 30px;
-          color: #333;
-          font-size: 16px;
-          font-weight: 400;
-        }
-      }
-      .today-notes-list {
+  }
+  
+  .attractions-list {
+    margin-bottom: 5px;
+    margin-top: 40px;
+    text-align: center;
+    float: left;
+    width: 100%;
+    .list-header {
+      border-top: 1px #ccc solid;
+      position: relative;
+      height: 30px;
+      margin-top: 20px;
+      .title {
         display: inline-block;
-        li {
-          margin-left: 0;
-          width: 230px;
-          margin: 15px 33px 15px 0;
-          .img-box {
-            display: block;
+        position: absolute;
+        top: 50%;
+        left: 42%;
+        margin: -32px 0 0;
+        width: 16%;
+        background: #fff;
+        line-height: 30px;
+        color: #333;
+        font-size: 16px;
+        font-weight: 400;
+      }
+    }
+    .today-notes-list {
+      display: inline-block;
+      li {
+        margin-left: 0;
+        width: 230px;
+        margin: 15px 33px 15px 0;
+        .img-box {
+          display: block;
+          overflow: hidden;
+          color: #333;
+          img {
+            width: 230px;
+            height: 163px;
+            border-radius: 5px;
+            display: inline-block;
+          }
+          p {
+            margin: 10px 0;
+            text-overflow: clip;
+            white-space: normal;
+            height: 36px;
+            line-height: 18px;
+            text-align: center;
             overflow: hidden;
-            color: #333;
-            img {
-              width: 230px;
-              height: 163px;
-              border-radius: 5px;
-              display: inline-block;
-            }
-            p {
-              margin: 10px 0;
-              text-overflow: clip;
-              white-space: normal;
-              height: 36px;
-              line-height: 18px;
-              text-align: center;
-              overflow: hidden;
-            }
           }
         }
       }

@@ -2,7 +2,7 @@
   <div class="search-panel">
     <el-input placeholder="请输入内容" v-model="input" class="input-with-select">
       <el-select v-model="select" slot="prepend" placeholder="类型">
-        <el-option label="旅游地" value="1"></el-option>
+        <el-option label="景点" value="1"></el-option>
         <el-option label="游记" value="2"></el-option>
         <el-option label="攻略" value="3"></el-option>
         <el-option label="用户" value="4"></el-option>
