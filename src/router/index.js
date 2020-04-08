@@ -6,17 +6,11 @@ import appConfig from '@/config/index'
 
 Vue.use(Router)
 
-const month = new Date().getMonth() + 1
-
 const homeRouter = [
   {
     path: '/main',
     name: 'Main',
     component: () => import('@/views/index/index'),
-  },
-  {
-    path: '/scenics',
-    redirect: '/scenics/m/' + month
   },
   {
     path: '/scenics/m/:id',
@@ -88,7 +82,11 @@ const routes = [
     name: 'Register',
     component: () => import('@/views/register/Register'),
   },
-
+  {
+    path: '/forget',
+    name: 'Forget',
+    component: () => import('@/views/login/Forget'),
+  },
   //404专用
   {
     redirect: '/404',

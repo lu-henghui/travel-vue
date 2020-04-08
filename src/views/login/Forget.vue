@@ -3,7 +3,7 @@
     <!-- <span class="logo">游乐记</span> -->
     <el-button type="primary" icon="el-icon-s-home" @click="toMain">返回首页</el-button>
     <div class="form-box" v-loading="loading" element-loading-background="rgba(0, 0, 0, 0)">
-      <div class="title"><h1 title="账号注册">账号注册</h1></div>
+      <div class="title"><h1 title="忘记密码">忘记密码</h1></div>
       <el-form
         ref="form"
         :model="form"
@@ -11,9 +11,6 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-form-item label="昵称" prop="nickname">
-          <el-input v-model="form.nickname" />
-        </el-form-item>
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="form.email" />
           <el-button size="mini" round @click="sendMsg">发送验证码</el-button>
@@ -22,16 +19,16 @@
         <el-form-item label="验证码" prop="code">
           <el-input v-model="form.code" maxlength="4" />
         </el-form-item>
-        <el-form-item label="密码" prop="password">
+        <el-form-item label="新密码" prop="password">
           <el-input v-model="form.password" type="password" />
         </el-form-item>
         <el-form-item label="确认密码" prop="confirm_password">
           <el-input v-model="form.confirm_password" type="password" />
         </el-form-item>
         <el-form-item class="submit">
-          <el-button type="primary" @click="submitForm('form')">注 册</el-button>
+          <el-button type="primary" @click="submitForm('form')">修改密码</el-button>
           <el-button class="pull-right" @click="toLogin">登 录</el-button>
-          <span class="pull-right">已有账号？</span>
+          <span class="pull-right">记得密码？</span>
         </el-form-item>
       </el-form>
     </div>
@@ -75,22 +72,15 @@ export default {
     }
     return {
       statusMsg: '',
+      loading: '',
       form: {
-        nickname: '',
         code: '',
         email: '',
         password: '',
         confirm_password: '',
-        type: 1 //注册
+        type: 2
       },
       rules: {
-        nickname: [
-          {
-            required: true,
-            message: '昵称不能为空',
-            trigger: ['blur', 'change'],
-          }
-        ],
         email: [
           {
             required: true,
@@ -126,21 +116,14 @@ export default {
   methods: {
     async sendMsg() {
       const self = this
-      let namePass
       let emailPass
       if (self.timerid) {
-        return false
-      }
-      this.$refs['form'].validateField('nickname', valid => {
-        namePass = valid
-      })
-      if (namePass) {
         return false
       }
       this.$refs['form'].validateField('email', valid => {
         emailPass = valid
       })
-      if (!namePass && !emailPass) {
+      if (!emailPass) {
         try {
           const res = await user.verify(this.form)
           // console.log(res)
@@ -167,7 +150,7 @@ export default {
       this.$refs[formName].validate(async valid =>{
         if(valid){
           try{
-            let res = await user.register(this.form)
+            let res = await user.forget(this.form)
             // console.log(res)
             if (res.error_code === 0) {
               this.$router.push('/login')

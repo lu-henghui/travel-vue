@@ -29,6 +29,15 @@ class User {
   }
 
   /**
+   * 忘记密码
+   * @param {object} data 信息
+   */
+  async forget (data) {
+    const res = await post('v1/user/forget', data, { handleError: true })
+    return res
+  }
+
+  /**
    * 登陆获取tokens
    * @param {string} email 用户名
    * @param {string} password 密码
