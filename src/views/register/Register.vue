@@ -83,6 +83,7 @@ export default {
         confirm_password: '',
         type: 1 //注册
       },
+      loading: false,
       rules: {
         nickname: [
           {

@@ -2,7 +2,7 @@
   <div class="page-index">
     <el-row>
       <el-col :span="18">
-        <div class="s-main">
+        <div class="s-main" v-if="list.scenics">
           <div class="top-info">
             <div class="clearfix">
               <h1 class="pull-left">{{ list.scenics.name }}</h1>
@@ -29,36 +29,36 @@
             </div>
             <ul class="clearfix">
               <li v-for="(item, idx) in list.arounds" :key="idx">
-                <router-link :to="'/scenics/'+item.id">
+                <router-link class="attractions-image" :to="'/scenics/'+item.id" :title="item.name">
                   <img v-lazy="item.image" :alt="item.name" />
                 </router-link>
-                <router-link class="attractions-name" :to="'/scenics/'+item.id">{{ item.name }}</router-link>
+                <router-link class="attractions-name" :to="'/scenics/'+item.id" :title="item.name">{{ item.name }}</router-link>
               </li>
             </ul>
           </div>
-          <div class="attractions-list" >
+          <div class="article-list" >
             <div class="list-header clearfix">
               <p class="title">相关游记</p>
             </div>
             <ul class="clearfix" v-if="list.notes">
               <li v-for="(item, idx) in list.notes" :key="idx">
-                <router-link :to="'/note/'+item.id">
+                <router-link class="article-image" :to="'/note/'+item.id" :title="item.title">
                   <img v-lazy="item.img" :alt="item.title" />
                 </router-link>
-                <router-link class="attractions-name" :to="'/note/'+item.id">{{ item.title }}</router-link>
+                <router-link class="article-name" :to="'/note/'+item.id" :title="item.title">{{ item.title }}</router-link>
               </li>
             </ul>
           </div>
-          <div class="attractions-list">
+          <div class="article-list">
             <div class="list-header clearfix">
               <p class="title">相关攻略</p>
             </div>
             <ul class="clearfix">
               <li v-for="(item, idx) in list.guides" :key="idx">
-                <router-link :to="'/guide/'+item.id">
+                <router-link class="article-image" :to="'/guide/'+item.id" :title="item.title">
                   <img v-lazy="item.img" :alt="item.title" />
                 </router-link>
-                <router-link class="attractions-name" :to="'/guide/'+item.id">{{ item.title }}</router-link>
+                <router-link class="article-name" :to="'/guide/'+item.id" :title="item.title">{{ item.title }}</router-link>
               </li>
             </ul>
           </div>
@@ -81,19 +81,19 @@ export default {
     return {
       list: {
         scenics: {
-          id: '',
-          name: '',
-          position: '',
-          image: '',
-          praise: '',
-          create_time: ''
+          // id: '',
+          // name: '',
+          // position: '',
+          // image: '',
+          // praise: '',
+          // create_time: ''
         },
         arounds: [
-          {
-            id: '',
-            name: '',
-            image: ''
-          }
+          // {
+          //   id: '',
+          //   name: '',
+          //   image: ''
+          // }
         ],
         notes: [],
         guides: []
@@ -105,8 +105,15 @@ export default {
     Recommend
   },
   async created () {
-    this.list = await scenics.getScenics(this.$route.params.id)
-    // console.log(this.list)
+    try {
+      this.list = await scenics.getScenics(this.$route.params.id)
+    } catch (error) {
+      this.$message({
+        showClose: true,
+        message: error.data.msg,
+        type: 'warning'
+      });
+    }
   },
   watch: {
     // eslint-disable-next-line no-unused-vars
@@ -203,7 +210,7 @@ export default {
       padding: 9px;
       box-sizing: border-box;
       border: 1px solid #ccc;
-      margin: 15px 33px 15px 0;
+      margin: 15px 19px 15px 0;
       background-color: #fff;
       -webkit-border-radius: 5px;
       -moz-border-radius: 5px;
@@ -212,15 +219,67 @@ export default {
       border-radius: 5px;
       -webkit-box-shadow: 1px 2px 4px rgba(232, 232, 232, 0.8);
       box-shadow: 1px 2px 4px rgba(232, 232, 232, 0.8);
-      img {
-        width: 100%;
+      .attractions-image{
+        display: flex;
+        width: 160px;
         height: 94px;
         margin-bottom: 10px;
-        border-radius: 5px 5px 0 0;
+        align-items: center;
+        justify-content: center;
+        img {
+          width: 100%;
+          height: 94px;
+          border-radius: 5px 5px 0 0;
+        }
       }
       .attractions-name {
-        display: block;
+        display: flex;
+        justify-content: center;
         width: 160px;
+        height: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #222;
+      }
+    }
+  }
+  .article-list {
+    margin-bottom: 5px;
+    margin-top: 20px;
+    .list-header p {
+      float: left;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    ul li {
+      float: left;
+      width: 245px;
+      padding: 12px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      margin: 15px 21px 15px 0;
+      background-color: #fff;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      -ms-border-radius: 5px;
+      -o-border-radius: 5px;
+      border-radius: 5px;
+      -webkit-box-shadow: 1px 2px 4px rgba(232, 232, 232, 0.8);
+      box-shadow: 1px 2px 4px rgba(232, 232, 232, 0.8);
+      .article-image{
+        display: flex;
+        margin-bottom: 10px;
+        justify-content: center;
+        img {
+          width: 219px;
+          height: 146px;
+          border-radius: 5px 5px 0 0;
+        }
+      }
+      .article-name {
+        display: flex;
+        width: 225px;
         height: 20px;
         overflow: hidden;
         text-overflow: ellipsis;

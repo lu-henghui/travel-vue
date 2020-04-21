@@ -93,7 +93,16 @@ class Note {
    */
   async getNote (id) {
     let res = await get(`v1/note/${id}`, { handleError: true })
-    // console.log(res)
+    res.note = formatDetailData(res.note)
+    return res
+  }
+
+  /**
+   * Login 根据ID获取游记
+   * @param {int} id 游记ID值
+   */
+  async getLoginNote (id) {
+    let res = await get(`v1/note/login/${id}`, { handleError: true })
     res.note = formatDetailData(res.note)
     return res
   }
@@ -121,10 +130,11 @@ class Note {
   }
 
   /**
-   * 获取我的游记
+   * 根据用户ID获取游记
+   * @param {int} id 用户ID
    */
-  async getMyNotes () {
-    let res = await get('v1/note/myNotes', { handleError: true })
+  async getNotesById (id) {
+    let res = await get(`v1/note/notes/${id}`, { handleError: true })
     return formatData(res)
   }
 

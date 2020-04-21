@@ -14,6 +14,9 @@
             <div class="post-title">
               <h1 class="title">{{ list.title }}</h1>
             </div>
+            <div class="praise-box">
+              <like :art_id="list.id" :type="type" :like_count="list.praise" :liked="list.liked" />
+            </div>
             <div class="content" id="myContent"></div>
           </div>
           <div class="attractions-list clearfix">
@@ -40,11 +43,13 @@
   </div>
 </template>
 <script>
+import Like from '@/components/base/like/like'
 import Comment from '@/components/base/comment/comment'
 import Guide from '@/models/guide'
 import Recommend from "@/components/public/recommend-list";
 
 export default {
+  inject: ['reload'],
   data() {
     return {
       id: '',
@@ -54,17 +59,24 @@ export default {
     }
   },
   async created(){
-    this.id = this.$route.params.id
+    const { user } = this.$store.state;
+    if (user) {
+      this.id = user.id;
+    }
     await this.initData()
   },
   methods: {
     async initData () {
+      let res
       try {
-        let { guide, arounds } = await Guide.getGuide(this.id)
-        // console.log(guide)
-        // console.log(arounds)
-        this.list = guide
-        this.arounds = arounds
+        if(this.id){
+          res = await Guide.getLoginGuide(this.$route.params.id);
+        }else{
+          res = await Guide.getGuide(this.$route.params.id);
+        }
+        console.log(res)
+        this.list = res.guide
+        this.arounds = res.arounds
       } catch (error) {
         console.log(error)
         this.$message.error(error.data.msg);
@@ -87,7 +99,14 @@ export default {
   },
   components: {
     Comment,
-    Recommend
+    Recommend,
+    Like
+  },
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    '$route' (to, from) {
+      this.reload()
+    }
   }
 }
 </script>
@@ -136,6 +155,14 @@ export default {
         color: #333 !important;
       }
     }
+    .praise-box {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      text-align: center;
+      top: 0;
+      right: 0;
+    }
   }
   
   .attractions-list {
@@ -168,7 +195,7 @@ export default {
       li {
         margin-left: 0;
         width: 230px;
-        margin: 15px 33px 15px 0;
+        margin: 10px 33px 0 0;
         .img-box {
           display: block;
           overflow: hidden;
@@ -183,7 +210,6 @@ export default {
             margin: 10px 0;
             text-overflow: clip;
             white-space: normal;
-            height: 36px;
             line-height: 18px;
             text-align: center;
             overflow: hidden;

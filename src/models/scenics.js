@@ -11,8 +11,8 @@ class Scenics {
   // }
 
   /**
-   * 根据ID获取旅行地
-   * @param {int} id 旅行地ID
+   * 根据ID获取景点
+   * @param {int} id 景点ID
    */
   async getScenics(id) {
     const res = await get(`v1/scenics/${id}`, { handleError: true })
@@ -20,7 +20,7 @@ class Scenics {
   }
 
   /**
-   * 搜索旅游地
+   * 搜索景点
    * @param {String} search 关键词
    */
   async getScenicsByKeyword(search) {
@@ -29,7 +29,7 @@ class Scenics {
   }
 
   /**
-   * 获取所有旅行地
+   * 获取所有景点
    */
   async getAllScenics() {
     const res = await get('v1/scenics', { handleError: true })
@@ -37,10 +37,19 @@ class Scenics {
   }
 
   /**
-   * 获取最火旅游地 
+   * 获取最火景点 
    */
   async getHotScenics() {
     const res = await get('v1/scenics/hotScenics', { handleError: true })
+    return res
+  }
+
+  /**
+   * 根据地点获取景点
+   * @param {String} position 地点
+   */
+  async getScenicsByPosition(position) {
+    const res = await get('v1/scenics/position?q='+ position, { handleError: true })
     return res
   }
 }

@@ -1,12 +1,13 @@
 <template>
-  <router-link v-if="Liked" @click.native="dislike(art_id)" to="">
-    <i class="iconfont iconbad-fill"></i>
+  <div>
+    <router-link v-if="Liked" @click.native="dislike(art_id)" to="">
+      <i class="iconfont icongood-fill"></i>
+    </router-link>
+    <router-link v-else @click.native="like(art_id)" to="">
+      <i class="iconfont icongood"></i>
+    </router-link>
     <span class="qty">{{ LikeCount }}</span>
-  </router-link>
-  <router-link v-else @click.native="like(art_id)" to="">
-    <i class="iconfont icongood-fill"></i>
-    <span class="qty">{{ LikeCount }}</span>
-  </router-link>
+  </div>
 </template>
 <script>
 import note from "@/models/note";
@@ -24,6 +25,18 @@ export default {
       // Type: this.type,
       LikeCount: this.like_count,
       Liked: this.liked
+    }
+  },
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    like_count (newValue, oldValue){
+      // console.log(newValue, oldValue) 
+      this.LikeCount = newValue
+    },
+    // eslint-disable-next-line no-unused-vars
+    liked (newValue, oldValue){
+      // console.log(newValue, oldValue) 
+      this.Liked = newValue
     }
   },
   methods: {
@@ -62,39 +75,34 @@ export default {
 </script>
 <style lang="scss" scoped>
 a {
-  margin-top: 6.7%;
-  width: 100%;
-  height: 100%;
+  width: 25px;
+  height: 25px;
   display: inline-block;
-  line-height: 50%;
   position: relative;
-  border-radius: 2px;
-  background: #75a43b;
   i {
     position: absolute;
-    width: 16px;
-    height: 16px;
-    top: 63%;
+    font-size: 24px;
+    top: 50%;
     left: 50%;
-    margin: -9px 0 0 -8px;
-    z-index: 1;
-    color: #fff;
+    margin-top: -12px;
+    margin-left: -12px;
+    color: #75a43b;;
   }
-  .qty {
-    bottom: 50%;
-    left: -330%;
-    margin: 0 0 -10px;
-    width: 300%;
-    white-space: nowrap;
-    line-height: 20px;
-    text-align: right;
-    transition: color 0.5s;
-    position: absolute;
-    color: #75a43b;
-    font-size: 14px;
-    font-weight: 700;
-    height: 20px;
-    display: inline-block;
-  }
+}
+.qty {
+  bottom: 50%;
+  left: -300%;
+  margin: 0 0 -10px;
+  width: 300%;
+  white-space: nowrap;
+  line-height: 20px;
+  text-align: right;
+  transition: color 0.5s;
+  position: absolute;
+  color: #75a43b;
+  font-size: 14px;
+  font-weight: 700;
+  height: 20px;
+  display: inline-block;
 }
 </style>

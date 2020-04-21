@@ -5,11 +5,11 @@
     </div>
     <ul class="m-re-list clearfix">
       <li v-for="(item,nidx) in nlist" :key="'n'+nidx" class="clearfix">
-        <router-link :to="'/note/'+ item.id"><img :src="item.img" :alt="item.title"></router-link>
+        <router-link :to="'/note/'+ item.id"><img v-lazy="item.img" :alt="item.title"></router-link>
         <router-link :to="'/note/'+ item.id">{{item.title}}</router-link>
       </li>
       <li v-for="(item,gidx) in glist" :key="'g'+gidx" class="clearfix">
-        <router-link :to="'/guide/'+ item.id"><img :src="item.img" :alt="item.title"></router-link>
+        <router-link :to="'/guide/'+ item.id"><img v-lazy="item.img" :alt="item.title"></router-link>
         <router-link :to="'/guide/'+ item.id">{{item.title}}</router-link>
       </li>
     </ul>
@@ -60,6 +60,11 @@ export default {
   list-style: none;
   li {
     margin-top: 25px;
+    // width: 240px;
+    // height: 160px;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
     img{
       border-radius: 5px;
       width: 240px;

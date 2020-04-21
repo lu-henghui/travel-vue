@@ -190,7 +190,7 @@ export default {
             this.setUserAndState(user);
             this.$message.success("保存成功");
           } catch (error) {
-            console.log(error);
+            // console.log(error);
             this.$message.error(error.data.msg);
           }
         }
@@ -204,7 +204,7 @@ export default {
         this.form.nickname = user.nickname;
         var arr = user.city.split(/[ ]+/);//以空格分开
         this.city = TextToCode[arr[0]][arr[1]].code;
-        console.log(this.city)
+        // console.log(this.city)
         this.form.sex = user.sex;
         this.form.introduce = user.introduce;
       }
@@ -227,11 +227,11 @@ export default {
               window.location.href = origin
             }, 1000)
           } catch (error) {
-            console.log('error!!')
+            // console.log('error!!')
             this.$message.error(error.data.msg)
           }
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           this.$message.error('请填写正确的信息')
           return false
         }

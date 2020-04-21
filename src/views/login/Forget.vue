@@ -137,7 +137,7 @@ export default {
                 clearInterval(self.timerid)
                 self.timerid = ''
                 self.statusMsg = '验证码已超时,请重新获取'
-                this.$message.error('验证码已超时')
+                self.$message.error('验证码已超时')
               }
             }, 1000)
           }

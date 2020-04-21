@@ -46,7 +46,7 @@ export default {
     h3 {
       color: #fff;
       font-size: 24px;
-      margin: 0;
+      margin-bottom: 10px;
     }
     .slide-text {
       position: absolute;

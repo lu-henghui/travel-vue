@@ -13,7 +13,7 @@ const homeRouter = [
     component: () => import('@/views/index/index'),
   },
   {
-    path: '/scenics/m/:id',
+    path: '/scenics',
     name: 'Scenics',
     component: () => import('@/views/scenics/Scenics'),
   },
@@ -138,7 +138,16 @@ let isLoginRequired = routeName => {
 router.beforeEach((to, from, next) => {
   // 登录验证
   if (isLoginRequired(to.name) && !store.state.logined) {
-    next({ path: '/login' })
+    Vue.prototype.$message({
+      message: '你尚未登陆，请重新登录',
+      type: 'error',
+    })
+    setTimeout(() => {
+      const { origin } = window.location
+      window.location.href = origin + '/#/login'
+    }, 1500)
+    // next({ path: '/login' })
+    next()
     return
   }
 

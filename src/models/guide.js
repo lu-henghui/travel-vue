@@ -21,7 +21,7 @@ class Guide {
   }
 
   /**
-   * 获取相应页数的游记
+   * 获取相应页数的攻略
    * @param {int} count 每页几条数据 
    * @param {int} page 第几页
    */
@@ -38,7 +38,7 @@ class Guide {
   }
 
   /**
-   * 获取相应页数的游记
+   * 获取相应页数的攻略
    * @param {int} count 每页几条数据 
    * @param {int} page 第几页
    */
@@ -55,7 +55,7 @@ class Guide {
   }
 
   /**
-   * 发布游记
+   * 发布攻略
    * @param {String} title 标题
    * @param {String} img 封面url
    * @param {Array} arounds 关联旅游地id数组
@@ -67,8 +67,8 @@ class Guide {
   }
 
   /**
-   * 获取几个最火游记
-   * @param {int} num 游记数量
+   * 获取几个最火攻略
+   * @param {int} num 攻略数量
    */
   async getHotGuides ({ num }) {
     let res = await post('v1/guide/hotGuides', { num }, { handleError: true })
@@ -76,8 +76,8 @@ class Guide {
   }
 
   /**
-   * 获取几个最火游记
-   * @param {int} num 游记数量
+   * 获取几个最火攻略
+   * @param {int} num 攻略数量
    */
   async getLoginHotGuides ({ num }) {
     let res = await post('v1/guide/login/hotGuides', { num }, { handleError: true })
@@ -88,8 +88,8 @@ class Guide {
   // 2. await 后面跟的是一个 Promise 对象
 
   /**
-   * 根据ID获取游记
-   * @param {int} id 游记ID值
+   * 根据ID获取攻略
+   * @param {int} id 攻略ID值
    */
   async getGuide (id) {
     const res = await get(`v1/guide/${id}`,{ handleError: true })
@@ -99,8 +99,18 @@ class Guide {
   }
 
   /**
+   * Login 根据ID获取攻略
+   * @param {int} id 攻略ID值
+   */
+  async getLoginGuide (id) {
+    let res = await get(`v1/guide/login/${id}`, { handleError: true })
+    res.guide = formatDetailData(res.guide)
+    return res
+  }
+
+  /**
    * 点赞
-   * @param {int} art_id 游记ID
+   * @param {int} art_id 攻略ID
    * @param {int} type 类型ID
    */
   async like ({ art_id, type }) {
@@ -111,7 +121,7 @@ class Guide {
 
   /**
    * 取消点赞
-   * @param {int} art_id 游记ID
+   * @param {int} art_id 攻略ID
    * @param {int} type 类型ID
    */
   async dislike ({ art_id, type }) {
@@ -121,10 +131,11 @@ class Guide {
   }
 
   /**
-   * 获取我的攻略
+   * 获取用户ID攻略
+   * @param {int} id 用户ID
    */
-  async getMyGuides () {
-    let res = await get('v1/guide/myGuides',  { handleError: true })
+  async getGuidesById (id) {
+    let res = await get(`v1/guide/guides/${id}`, { handleError: true })
     return formatData(res)
   }
 
@@ -158,8 +169,8 @@ class Guide {
 
 
 /**
- * 格式化游记 前台
- * @param {array} res 游记内容
+ * 格式化攻略 前台
+ * @param {array} res 攻略内容
  */
 function formatData (res) {
   for (var i = 0; i < res.length; i++) {
@@ -173,8 +184,8 @@ function formatData (res) {
 }
 
 /**
- * 格式化游记 详细
- * @param {array} res 游记内容
+ * 格式化攻略 详细
+ * @param {array} res 攻略内容
  */
 function formatDetailData (res) {
   if ( !res.avatar ) {

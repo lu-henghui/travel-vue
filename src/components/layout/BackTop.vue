@@ -1,6 +1,6 @@
 <template>
   <div class="backTop" :style="{ right: right + 'px', bottom: bottom + 'px' }" v-if="showBackTop">
-    <i class="iconfont iconrising" :style="{ fontSize: fontSize + 'px' }" @click="backTop"></i>
+    <i class="iconfont iconrocket" :style="{ fontSize: fontSize + 'px' }" @click="backTop"></i>
   </div>
 </template>
 

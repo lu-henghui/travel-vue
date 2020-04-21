@@ -84,7 +84,7 @@ export default {
             this.$message.success("登录成功");
           } catch (error) {
             this.$message.error(error.data.msg);
-            console.log(error);
+            // console.log(error);
           }
         }
       });

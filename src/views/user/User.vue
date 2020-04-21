@@ -26,10 +26,10 @@
               </div>
               <div class="ops mt10 pull-left">
                 <el-badge :value="user.notes" class="item">
-                  <el-button @click="getMyNotes" size="small">游记</el-button>
+                  <el-button @click="getNotesById" size="small">游记</el-button>
                 </el-badge>
                 <el-badge :value="user.guides" class="item">
-                  <el-button @click="getMyGuides" size="small">攻略</el-button>
+                  <el-button @click="getGuidesById" size="small">攻略</el-button>
                 </el-badge>
                 <el-badge :value="user.fans" class="item" type="primary">
                   <el-button @click="getFansById" size="small">粉丝</el-button>
@@ -47,25 +47,25 @@
           <div v-show="showlList===0" class="content-list">
             <div class="m-note-main clearfix">
               <h2 class="m-note-left">
-                <router-link to=''>我的游记</router-link>
+                <router-link to=''>游记</router-link>
               </h2>
               <el-button class="post" type="primary" icon="el-icon-edit" @click="postNote">发布游记</el-button>
             </div>
-            <art :list="list" :type="type" :hasDelete="hasDelete" />
+            <art :list="list" :type="type" :hasDelete="isMe" />
           </div>
           <div v-show="showlList===1" class="content-list">
             <div class="m-note-main clearfix">
               <h2 class="m-note-left">
-                <router-link to="">我的攻略</router-link>
+                <router-link to="">攻略</router-link>
               </h2>
               <el-button class="post" type="primary" icon="el-icon-edit" @click="postGuide">发布攻略</el-button>
             </div>
-            <art :list="list" :type="type" :hasDelete="hasDelete" />
+            <art :list="list" :type="type" :hasDelete="isMe" />
           </div>
           <div v-show="showlList===2" class="content-list">
             <div class="m-note-main clearfix">
               <h2 class="m-note-left">
-                <router-link to="/note">我的粉丝</router-link>
+                <router-link to="/note">粉丝</router-link>
               </h2>
             </div>
             <ulist :list="list" type="0" />
@@ -73,7 +73,7 @@
           <div v-show="showlList===3" class="content-list">
             <div class="m-note-main clearfix">
               <h2 class="m-note-left">
-                <router-link to="/note">我的关注</router-link>
+                <router-link to="/note">关注</router-link>
               </h2>
             </div>
             <ulist :list="list" type="1" />
@@ -101,7 +101,6 @@ export default {
       id: '',
       isMe: false,
       isFollow: false,
-      hasDelete: true,
       user: {
         nickname: "",
         avatar: "",
@@ -161,25 +160,25 @@ export default {
     toBasic () {
       this.$router.push({ path: '/setting?type=basic' })
     },
-    // 获取我的游记
-    async getMyNotes() {
+    // 获取用户ID的游记
+    async getNotesById() {
       this.list = ''
       this.showlList = 0
       this.type = 100
       try {
-        this.list = await Note.getMyNotes();
+        this.list = await Note.getNotesById(this.id);
       } catch (error) {
+        console.log(error)
         this.$message(error.data.msg)
-        // console.log(error)
       }
     },
-    // 获取我的攻略
-    async getMyGuides() {
+    // 获取用户ID的攻略
+    async getGuidesById() {
       this.list = ''
       this.showlList = 1
       this.type = 200
       try {
-        this.list = await Guide.getMyGuides();
+        this.list = await Guide.getGuidesById(this.id);
       } catch (error) {
         this.$message(error.data.msg)
         // console.log(error)

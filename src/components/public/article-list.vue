@@ -37,7 +37,7 @@
           <el-badge class="item" v-show="hasDelete">
             <el-button @click="toDelete(item.id)" size="small">删除</el-button>
           </el-badge>
-          <el-badge :value="item.commentNum" :max="99" class="item">
+          <el-badge :value="item.commentNum" :max="99" class="item" type="primary">
             <el-button @click="toComments(item.id)" size="small">评论</el-button>
           </el-badge>
         </div>
